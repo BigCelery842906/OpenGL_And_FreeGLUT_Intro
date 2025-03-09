@@ -20,6 +20,7 @@ public:
     void DrawTriangle4();
     void DrawTriangle5();
     void DrawTriangle6();
+    void DrawHexagon();
 
     ~HelloGL(void);
 

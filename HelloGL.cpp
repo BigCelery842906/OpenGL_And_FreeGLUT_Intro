@@ -15,7 +15,8 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	DrawTriangles();
+	//DrawTriangles();
+	DrawHexagon();
 	glEnd();
 	glFlush();
 }
@@ -44,9 +45,10 @@ void HelloGL::DrawTriangles()
 	DrawTriangle1();
 	DrawTriangle2();
 	DrawTriangle3();
-	/*DrawTriangle4();
+	DrawTriangle4();
 	DrawTriangle5();
-	DrawTriangle6();*/
+	DrawTriangle6();
+	
 
 }
 
@@ -92,11 +94,53 @@ void HelloGL::DrawTriangle4()
 	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 	glVertex2f(0.5, 0.75);
 	glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
-	glVertex2f(-0.85, 0.5);
+	glVertex2f(0.85, 0.5);
 	glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
-	glVertex2f(-0.4, 0.5f);
+	glVertex2f(0.4, 0.5f);
 	glEnd();
 }
 
+void HelloGL::DrawTriangle5() 
+{
+	glBegin(GL_POLYGON);
+	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+	glVertex2f(0.4, 0.3);
+	glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
+	glVertex2f(0.4, -0.1);
+	glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
+	glVertex2f(0.75, -0.1f);
+	glEnd();
+}
+
+void HelloGL::DrawTriangle6()
+{
+	glBegin(GL_POLYGON);
+	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+	glVertex2f(0.3, -0.3);
+	glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
+	glVertex2f(0.45, -0.6);
+	glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
+	glVertex2f(0.85, -0.6);
+	glEnd();
+}
+
+void HelloGL::DrawHexagon()
+{
+	glBegin(GL_POLYGON);
+	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+	glVertex2f(-0.3, 0.5);
+	glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
+	glVertex2f(0.3,0.5);
+	glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
+	glVertex2f(0.6,0);
+	glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
+	glVertex2f(0.3,-0.5);
+	glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
+	glVertex2f(-0.3,-0.5);
+	glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
+	glVertex2f(-0.6,0.0);
+	glEnd();
+	
+}
 //https://staffsuniversity.sharepoint.com/:w:/s/TheVault/ETRXHmLlB9xOuW7OeaUxfFYBdCLU7l8f45aW5QpoQl2qKA?e=sj2DP5
 
