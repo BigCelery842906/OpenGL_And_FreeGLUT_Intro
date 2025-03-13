@@ -7,4 +7,5 @@ namespace GLUTCallbacks
 
 	void Display();
 
+	void Timer (int preferredRefresh);
 }
