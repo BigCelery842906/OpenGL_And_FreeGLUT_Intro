@@ -27,8 +27,11 @@ public:
     void DrawTriangle5();
     void DrawTriangle6();
     void DrawHexagon();
+    void DrawCube();
 
     void Update();
+
+    void Keyboard(unsigned char key, int x, int y);
 
 
 
