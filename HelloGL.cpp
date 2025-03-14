@@ -1,5 +1,7 @@
 ﻿#include "HelloGL.h"
 
+#include <vector>
+
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -63,6 +65,7 @@ void HelloGL::DrawTriangles()
 void HelloGL::DrawTriangle1() 
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
 	glBegin(GL_POLYGON);
@@ -82,6 +85,7 @@ void HelloGL::DrawTriangle1()
 void HelloGL::DrawTriangle2()
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
 	glBegin(GL_POLYGON);
@@ -101,6 +105,7 @@ void HelloGL::DrawTriangle2()
 void HelloGL::DrawTriangle3()
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
 	glBegin(GL_POLYGON);
@@ -120,6 +125,7 @@ void HelloGL::DrawTriangle3()
 void HelloGL::DrawTriangle4()
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
 			glBegin(GL_POLYGON);
@@ -139,6 +145,7 @@ void HelloGL::DrawTriangle4()
 void HelloGL::DrawTriangle5() 
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
 	glBegin(GL_POLYGON);
@@ -158,6 +165,7 @@ void HelloGL::DrawTriangle5()
 void HelloGL::DrawTriangle6()
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
 	glBegin(GL_POLYGON);
@@ -178,8 +186,10 @@ void HelloGL::DrawTriangle6()
 void HelloGL::DrawHexagon()
 {
 	glPushMatrix();
-	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
-	//glTranslatef(0,0,0);
+	
+	//glTranslatef(x,y,z);
+	
+	glRotatef(rotation, 0.0f, 0.0f, 1.0f);
 	
 	glBegin(GL_POLYGON);
 	{
