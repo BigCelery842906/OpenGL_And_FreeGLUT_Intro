@@ -19,6 +19,23 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 
+	
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	glViewport(0,0,800,800);
+	gluPerspective(45,1,0,1000);
+	
+	glMatrixMode(GL_MODELVIEW);
+
+	camera = new Camera();
+
+	camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
+	camera-> center.x = 0.0f; camera-> center.y = 0.0f; camera-> center.z = 0.0f;
+	camera-> up.x = 0.0f; camera-> up.y = 1.0f; camera-> up.z = 0.0f;
+
+	
+	
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glEnable(GL_CULL_FACE);
 	glutMainLoop();
@@ -73,6 +90,7 @@ void HelloGL::DrawTriangles()
 void HelloGL::DrawTriangle1() 
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glTranslatef(-0.2,-0.2,-0.2);
 	//glTranslatef();
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
@@ -94,6 +112,7 @@ void HelloGL::DrawTriangle1()
 void HelloGL::DrawTriangle2()
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
@@ -114,6 +133,7 @@ void HelloGL::DrawTriangle2()
 void HelloGL::DrawTriangle3()
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
@@ -134,6 +154,7 @@ void HelloGL::DrawTriangle3()
 void HelloGL::DrawTriangle4()
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
@@ -154,6 +175,7 @@ void HelloGL::DrawTriangle4()
 void HelloGL::DrawTriangle5() 
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
@@ -174,6 +196,7 @@ void HelloGL::DrawTriangle5()
 void HelloGL::DrawTriangle6()
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glTranslatef(-0.2,-0.2,-0.2);
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
@@ -195,10 +218,11 @@ void HelloGL::DrawTriangle6()
 void HelloGL::DrawHexagon()
 {
 	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
 	
 	//glTranslatef(x,y,z);
 	
-	glRotatef(rotation, 0.0f, 0.0f, 1.0f);
+	glRotatef(rotation, 1.0f, 0.0f, 0.0f);
 	
 	glBegin(GL_POLYGON);
 	{
@@ -225,7 +249,7 @@ void HelloGL::DrawHexagon()
 void HelloGL::DrawCube()
 {
 	glPushMatrix();
-
+	glTranslatef(0.0f,0.0f,-5.0f);
 	glRotatef(rotation, 1.0f, 1.0f, 1.0f);
 
 	/*glBegin(GL_POLYGON);
@@ -313,6 +337,10 @@ void HelloGL::DrawCube()
 
 void HelloGL::Update()
 {
+	glLoadIdentity();
+	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
+	
+	
 	Sleep(5);
 	rotation += 0.5f;
 	if (rotation >= 360.0f)
@@ -325,9 +353,19 @@ void HelloGL::Update()
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
 	if (key == 'd')
-		rotation += 1.0f;
+	{
+		camera-> center.x += 0.01f;
+		camera-> center.y += 0.01f;
+		camera-> center.z += 0.01f;
+		//rotation += 1.0f;
+	}
 	else if (key == 'a')
-		rotation -= 1.0f;
+	{
+		camera-> center.x -= 0.01f;
+		camera-> center.y -= 0.01f;
+		camera-> center.z -= 0.01f;
+		//rotation -= 1.0f;
+	}
 }
 
 
