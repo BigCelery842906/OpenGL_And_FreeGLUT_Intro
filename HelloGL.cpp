@@ -73,6 +73,7 @@ void HelloGL::DrawTriangles()
 void HelloGL::DrawTriangle1() 
 {
 	glPushMatrix();
+	glTranslatef(-0.2,-0.2,-0.2);
 	//glTranslatef();
 	glRotatef(rotation, 0.0f, 0.0f, -1.0f);
 
@@ -81,9 +82,9 @@ void HelloGL::DrawTriangle1()
 		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 		glVertex2f(-0.5, 0.75);
 		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
-		glVertex2f(-0.35, 0.5f);
-		glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
 		glVertex2f(-0.65, 0.5);
+		glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
+		glVertex2f(-0.35, 0.5f);
 		glEnd();
 	}
 	
@@ -141,9 +142,9 @@ void HelloGL::DrawTriangle4()
 		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 		glVertex2f(0.5, 0.75);
 		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
-		glVertex2f(0.85, 0.5);
-		glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
 		glVertex2f(0.4, 0.5f);
+		glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
+		glVertex2f(0.85, 0.5);
 		glEnd();
 	}
 	
@@ -202,15 +203,15 @@ void HelloGL::DrawHexagon()
 	glBegin(GL_POLYGON);
 	{
 		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-		glVertex2f(-0.3, 0.5);
+		glVertex2f(-0.3, -0.5);
 		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
-		glVertex2f(0.3,0.5);
+		glVertex2f(0.3,-0.5);
 		glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
 		glVertex2f(0.6,0);
 		glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
-		glVertex2f(0.3,-0.5);
+		glVertex2f(0.3,0.5);
 		glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
-		glVertex2f(-0.3,-0.5);
+		glVertex2f(-0.3,0.5);
 		glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
 		glVertex2f(-0.6,0.0);
 		glEnd();
