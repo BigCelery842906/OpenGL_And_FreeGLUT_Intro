@@ -279,50 +279,68 @@ void HelloGL::DrawCube()
 	
 #pragma region CUBETIME
 	glBegin(GL_POLYGON);
-	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+	glColor4f(0,0,0,0);
 	glVertex3f(-0.5, -0.5, 0.5);
+	glColor4f(1,0,0,0);
 	glVertex3f(0.5, -0.5, 0.5);
+	glColor4f(1,1,0,0);
 	glVertex3f(0.5, 0.5, 0.5);
+	glColor4f(0,1,0,0);
 	glVertex3f(-0.5, 0.5, 0.5);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
+	glColor4f(0,1,0,0);
 	glVertex3f(-0.5, 0.5, 0.5);
+	glColor4f(1,1,0,0);
 	glVertex3f(0.5, 0.5, 0.5);
+	glColor4f(0,1,1,0);
 	glVertex3f(0.5, 0.5, -0.5);
+	glColor4f(0,0,1,0);
 	glVertex3f(-0.5, 0.5, -0.5); //minus in here
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
+	glColor4f(0,0,1,0);
 	glVertex3f(-0.5, 0.5, -0.5);
+	glColor4f(0,1,1,0);
 	glVertex3f(0.5, 0.5, -0.5);
+	glColor4f(1,0,1,0);
 	glVertex3f(0.5, -0.5, -0.5);
+	glColor4f(1,1,1,0);
 	glVertex3f(-0.5, -0.5, -0.5);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
+	glColor4f(1,1,1,0);
 	glVertex3f(-0.5, -0.5, -0.5);
+	glColor4f(1,0,1,0);
 	glVertex3f(0.5, -0.5, -0.5);
+	glColor4f(1,0,0,0);
 	glVertex3f(0.5, -0.5, 0.5);
+	glColor4f(0,0,0,0);
 	glVertex3f(-0.5, -0.5, 0.5);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
+	glColor4f(1,0,0,0);
 	glVertex3f(0.5, -0.5, 0.5);
+	glColor4f(1,0,1,0);
 	glVertex3f(0.5, -0.5, -0.5);
+	glColor4f(0,1,1,0);
 	glVertex3f(0.5, 0.5, -0.5);
+	glColor4f(1,1,0,0);
 	glVertex3f(0.5, 0.5, 0.5);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
+	glColor4f(1,1,1,0);
 	glVertex3f(-0.5, -0.5,-0.5);
+	glColor4f(0,0,0,0);
 	glVertex3f(-0.5, -0.5, 0.5);
+	glColor4f(0,1,0,0);
 	glVertex3f(-0.5, 0.5, 0.5);
+	glColor4f(0,0,1,0);
 	glVertex3f(-0.5, 0.5, -0.5);
 	glEnd();
 
@@ -331,7 +349,7 @@ void HelloGL::DrawCube()
 	glCullFace(GL_BACK);
 
 	
-	glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+	//glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 	//glutSolidCube(0.4);
 	
 	glPopMatrix();
