@@ -42,6 +42,7 @@ public:
     void DrawTriangle6();
     void DrawHexagon();
     void DrawCube();
+    void DrawWireShapes();
 
     void Update();
 

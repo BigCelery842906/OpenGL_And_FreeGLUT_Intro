@@ -14,7 +14,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	glutInitWindowPosition(1000,100);
 	glutInitWindowSize(800, 800);
-	glutCreateWindow("OpenGL and FreeGLUT");
+	glutCreateWindow("Basically like that one game");
 	
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
@@ -30,6 +30,7 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	camera = new Camera();
 
+	//camera-> eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
 	camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
 	camera-> center.x = 0.0f; camera-> center.y = 0.0f; camera-> center.z = 0.0f;
 	camera-> up.x = 0.0f; camera-> up.y = 1.0f; camera-> up.z = 0.0f;
@@ -45,9 +46,10 @@ void HelloGL::Display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	DrawTriangles();
-	DrawHexagon();
+	//DrawTriangles();
+	//DrawHexagon();
 	DrawCube();
+	//DrawWireShapes();
 	glEnd();
 	
 	glFlush();
@@ -252,6 +254,7 @@ void HelloGL::DrawCube()
 	glTranslatef(0.0f,0.0f,-5.0f);
 	glRotatef(rotation, 1.0f, 1.0f, 1.0f);
 
+#pragma region sugma
 	/*glBegin(GL_POLYGON);
 	{
 		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
@@ -272,6 +275,7 @@ void HelloGL::DrawCube()
 		glVertex3f(-0.3,-0.3,-0.3);
 		glEnd();
 	}*/
+#pragma endregion
 	
 #pragma region CUBETIME
 	glBegin(GL_POLYGON);
@@ -333,7 +337,18 @@ void HelloGL::DrawCube()
 	glPopMatrix();
 }
 
+void HelloGL::DrawWireShapes()
+{
+	glPushMatrix();
+	glTranslatef(0.0f,0.0f,-5.0f);
+	glRotatef(rotation, 1.0f, 1.0f, 1.0f);
+	
+	glutWireTeapot(1);
+	
+	glPopMatrix();
+}
 #pragma endregion
+
 
 void HelloGL::Update()
 {
@@ -350,21 +365,33 @@ void HelloGL::Update()
 	glutPostRedisplay();
 }
 
+
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
-	if (key == 'd')
+	key = tolower(key); //Converts upper into lower, making sure it will always fire
+	if (key == 'w')
 	{
-		camera-> center.x += 0.01f;
-		camera-> center.y += 0.01f;
-		camera-> center.z += 0.01f;
-		//rotation += 1.0f;
+		camera-> center.x -= 0.1f;
+	}
+	else if (key == 's')
+	{
+		camera-> center.x += 0.1f;
 	}
 	else if (key == 'a')
 	{
-		camera-> center.x -= 0.01f;
-		camera-> center.y -= 0.01f;
-		camera-> center.z -= 0.01f;
-		//rotation -= 1.0f;
+		camera-> center.z += 0.1f;
+	}
+	else if (key == 'd')
+	{
+		camera-> center.z -= 0.1f;
+	}
+	else if (key == 'q')
+	{
+		camera-> center.y -= 0.1f;
+	}
+	else if (key == 'e')
+	{
+		camera-> center.y += 0.1f;
 	}
 }
 
