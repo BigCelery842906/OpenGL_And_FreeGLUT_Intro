@@ -1,7 +1,38 @@
 ﻿#include "HelloGL.h"
-
 #include <vector>
+#pragma region CubeArrays
+Vertex HelloGL::vertices[] =
+	{
+	1, 1, 1, -1, 1, 1, -1,-1, 1, // v0-v1-v2 (front)
+	-1,-1, 1, 1,-1, 1, 1, 1, 1, // v2-v3-v0
+	1, 1, 1, 1,-1, 1, 1,-1,-1, // v0-v3-v4 (right)
+	1,-1,-1, 1, 1,-1, 1, 1, 1, // v4-v5-v0
+	1, 1, 1, 1, 1,-1, -1, 1,-1, // v0-v5-v6 (top)
+	-1, 1,-1, -1, 1, 1, 1, 1, 1, // v6-v1-v0
+	-1, 1, 1, -1, 1,-1, -1,-1,-1, // v1-v6-v7 (left)
+	-1,-1,-1, -1,-1, 1, -1, 1, 1, // v7-v2-v1
+	-1,-1,-1, 1,-1,-1, 1,-1, 1, // v7-v4-v3 (bottom)
+	1,-1, 1, -1,-1, 1, -1,-1,-1, // v3-v2-v7
+	1,-1,-1, -1,-1,-1, -1, 1,-1, // v4-v7-v6 (back)
+	-1, 1,-1, 1, 1,-1, 1,-1,-1	// v6-v5-v4
+	}; 
 
+Color HelloGL::colors[] =
+	{
+	1, 1, 1, 1, 1, 0, 1, 0, 0, // v0-v1-v2 (front)
+	1, 0, 0, 1, 0, 1, 1, 1, 1, // v2-v3-v0
+	1, 1, 1, 1, 0, 1, 0, 0, 1, // v0-v3-v4 (right)
+	0, 0, 1, 0, 1, 1, 1, 1, 1, // v4-v5-v0
+	1, 1, 1, 0, 1, 1, 0, 1, 0, // v0-v5-v6 (top)
+	0, 1, 0, 1, 1, 0, 1, 1, 1, // v6-v1-v0
+	1, 1, 0, 0, 1, 0, 0, 0, 0, // v1-v6-v7 (left)
+	0, 0, 0, 1, 0, 0, 1, 1, 0, // v7-v2-v1
+	0, 0, 0, 0, 0, 1, 1, 0, 1, // v7-v4-v3 (bottom)
+	1, 0, 1, 1, 0, 0, 0, 0, 0, // v3-v2-v7
+	0, 0, 1, 0, 0, 0, 0, 1, 0, // v4-v7-v6 (back)
+	0, 1, 0, 0, 1, 1, 0, 0, 1  // v6-v5-v4
+	}; 
+#pragma endregion
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -24,14 +55,14 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glLoadIdentity();
 
 	glViewport(0,0,800,800);
-	gluPerspective(45,1,0,1000);
+	gluPerspective(70,1,0,1000);
 	
 	glMatrixMode(GL_MODELVIEW);
 
 	camera = new Camera();
 
-	//camera-> eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
-	camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
+	camera-> eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
+	//camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
 	camera-> center.x = 0.0f; camera-> center.y = 0.0f; camera-> center.z = 0.0f;
 	camera-> up.x = 0.0f; camera-> up.y = 1.0f; camera-> up.z = 0.0f;
 
@@ -48,8 +79,9 @@ void HelloGL::Display()
 	
 	//DrawTriangles();
 	//DrawHexagon();
-	DrawCube();
+	//DrawCube();
 	//DrawWireShapes();
+	DrawCubeArray();
 	glEnd();
 	
 	glFlush();
@@ -365,6 +397,22 @@ void HelloGL::DrawWireShapes()
 	
 	glPopMatrix();
 }
+
+void HelloGL::DrawCubeArray()
+{
+	glPushMatrix();
+	glRotatef(rotation, 1.0f, 1.0f, 1.0f);
+	glBegin(GL_TRIANGLES);
+	for (int i =0; i < 36; i++)
+	{
+		glColor3fv(&colors[i].r);
+		glVertex3fv(&vertices[i].x);
+	}
+	glEnd();
+
+	glPopMatrix();
+}
+
 #pragma endregion
 
 
