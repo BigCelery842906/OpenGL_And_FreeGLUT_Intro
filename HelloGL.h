@@ -22,8 +22,9 @@ public:
     HelloGL(int argc, char* argv[]);
     
     Camera* camera;
-    Cube* cube;
-    
+    //Cube* cube;
+    Cube* cube[200];
+    void DrawFloorReference();
     void Display();
     void Update();
     void Keyboard(unsigned char key, int x, int y);

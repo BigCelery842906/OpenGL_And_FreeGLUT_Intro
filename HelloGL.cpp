@@ -31,12 +31,20 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 	camera = new Camera();
 
-	camera-> eye.x = 5.0f; camera->eye.y = 5.0f; camera->eye.z = -5.0f;
+	camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
 	//camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
 	camera-> center.x = 0.0f; camera-> center.y = 0.0f; camera-> center.z = 0.0f;
 	camera-> up.x = 0.0f; camera-> up.y = 1.0f; camera-> up.z = 0.0f;
 
-	cube = new Cube();
+
+	for (int i = 0; i < 200; i++)
+	{
+		std::cout << i << std::endl;
+		cube[i] = new Cube(((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f);
+		//cube[i] = new Cube(i,i,i);
+	}
+
+	//cube = new Cube(1,2,3);
 	
 	
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
@@ -45,14 +53,20 @@ HelloGL::HelloGL(int argc, char* argv[])
 	glutMainLoop();
 }
 
+
+
 void HelloGL::Display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//DRAW METHOD HERE
-	cube -> Draw();
-	
-	glEnd();
+	 for (int i = 0; i < 200; i++)
+	 {
+	 	cube[i] -> Draw();
+	 }
+
+	DrawFloorReference();
+	//glEnd();
 	
 	glFlush();
 	glutSwapBuffers();
@@ -265,7 +279,20 @@ HelloGL::~HelloGL(void)
 
 
 #pragma endregion
-
+void HelloGL::DrawFloorReference()
+{
+	glPushMatrix();
+	glBegin(GL_POLYGON);
+	{
+		glColor3f(.5,0,.5);
+		glVertex3f(10,-4,10);
+		glVertex3f(10,-4,-10);
+		glVertex3f(-10,-4,-10);
+		glVertex3f(-10,-4,10);
+	}
+	glEnd();
+	glPopMatrix();
+}
 
 void HelloGL::Update()
 {
@@ -281,7 +308,10 @@ void HelloGL::Update()
 	}
 	glutPostRedisplay();
 
-	cube -> Update();
+	for (int i = 0; i < 200; i++)
+	{
+		cube[i] -> Update();
+	}
 	
 }
 

@@ -29,9 +29,16 @@ GLushort Cube::indices[] =
     4,7,6, 6,5,4 }; // back
 #pragma endregion
 
-Cube::Cube()
+Cube::Cube(float x, float y, float z)
 {
+	_position.x = x;
+	_position.y = y;
+	_position.z = z;
+	
+	
 	rotationCube = 0.0f;
+	//DrawCube();
+	DrawIndexedCubeAlt();
 }
 
 Cube::~Cube()
@@ -46,43 +53,30 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-	Sleep(5);
+	
 	rotationCube += 0.5f;
 	if (rotationCube >= 360.0f)
 	{
 		rotationCube =0.0f;
 	}
+	if (_position.z < -1)
+	{
+		_position.z += 0.5;
+	}
+	else
+	{
+		_position.z = -100;
+	}
+
+	
 }
 
 void Cube::DrawCube()
 {
 	glPushMatrix();
-	glTranslatef(0.0f,0.0f,-5.0f);
+	glTranslatef(_position.x, _position.y, _position.z);
 	glRotatef(rotationCube, 1.0f, 1.0f, 1.0f);
 
-#pragma region sugma
-	/*glBegin(GL_POLYGON);
-	{
-		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-		glVertex3f(-0.3,-0.3,0.3);
-		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
-		glVertex3f(-0.3,0.3,0.3);
-		glColor4f(0.0f, 1.0f, 0.0f, 0.0f);
-		glVertex3f(0.3,0.3,0.3);
-		glColor4f(0.0f, 1.0f, 1.0f, 0.0f);
-		glVertex3f(-0.3,-0.3,0.3);
-		glColor4f(0.0f, 0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.3,-0.3,-0.3);
-		glColor4f(1.0f, 0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.3,0.3,-0.3);
-		glColor4f(1.0f, 1.0f, 0.0f, 0.0f);
-		glVertex3f(0.3,0.3,-0.3);
-		glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-		glVertex3f(-0.3,-0.3,-0.3);
-		glEnd();
-	}*/
-#pragma endregion
-	
 #pragma region CUBETIME
 	glBegin(GL_POLYGON);
 	glColor4f(0,0,0,0);
@@ -151,15 +145,11 @@ void Cube::DrawCube()
 	glEnd();
 
 #pragma endregion
-
 	glCullFace(GL_BACK);
-
-	
-	//glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
-	//glutSolidCube(0.4);
 	
 	glPopMatrix();
 }
+
 void Cube::DrawIndexedCube()
 {
 	glPushMatrix();
@@ -177,6 +167,7 @@ void Cube::DrawIndexedCube()
 	glEnd();
 	glPopMatrix();
 }
+ 
 void Cube::DrawIndexedCubeAlt()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -185,6 +176,7 @@ void Cube::DrawIndexedCubeAlt()
 	glColorPointer(3, GL_FLOAT, 0, indexedColors);
 
 	glPushMatrix();
+	glTranslatef(_position.x, _position.y, _position.z);
 	glRotatef(rotationCube, 1.0f, 1.0f, 1.0f);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, indices);
 	glPopMatrix();
