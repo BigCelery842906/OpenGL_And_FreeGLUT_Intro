@@ -12,6 +12,7 @@ namespace GLUTCallbacks
 	void Init(HelloGL *gl)
 	{
 		helloGL = gl;
+		
 	}
 
 	void Display() 
