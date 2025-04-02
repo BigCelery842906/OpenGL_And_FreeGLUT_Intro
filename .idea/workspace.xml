@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5925c828-f551-4182-8749-f7c74ff0f7ea" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/OpenGL_And_FreeGLUT_Intro.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGL_And_FreeGLUT_Intro.vcxproj" afterDir="false" />
-    </list>
+    <list default="true" id="5925c828-f551-4182-8749-f7c74ff0f7ea" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +13,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "BigCelery842906"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/BigCelery842906/OpenGL_And_FreeGLUT_Intro.git",
+    "accountId": "1fe7422a-1904-4767-ac98-3169b0295674"
+  }
+}]]></component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Cube.cpp" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/HelloGL.cpp" root0="FORCE_HIGHLIGHTING" />
@@ -57,6 +67,7 @@
       <workItem from="1743276706947" duration="6000" />
       <workItem from="1743281118501" duration="12000" />
       <workItem from="1743281179163" duration="111000" />
+      <workItem from="1743587716610" duration="26000" />
     </task>
     <servers />
   </component>

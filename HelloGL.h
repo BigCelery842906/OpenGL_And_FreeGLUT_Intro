@@ -20,9 +20,9 @@ private:
 public:
     
     HelloGL(int argc, char* argv[]);
-    
+    void InitGL(int argc, char* argv[]);
+    void InitObjects();
     Camera* camera;
-    //Cube* cube;
     Cube* cube[200];
     void DrawFloorReference();
     void Display();
