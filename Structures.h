@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#define REFRESHRATE 16
+#define REFRESHRATE 16 //This is in ms not FPS
 
 
 struct Vector3

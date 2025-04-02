@@ -5,13 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5925c828-f551-4182-8749-f7c74ff0f7ea" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/cube.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/objLoader.cpp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/objLoader.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cube.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/Cube.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Cube.h" beforeDir="false" afterPath="$PROJECT_DIR$/Cube.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/HelloGL.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/HelloGL.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/OpenGL_And_FreeGLUT_Intro.vcxproj" beforeDir="false" afterPath="$PROJECT_DIR$/OpenGL_And_FreeGLUT_Intro.vcxproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,6 +56,7 @@
       <workItem from="1743187054235" duration="8000" />
       <workItem from="1743276706947" duration="6000" />
       <workItem from="1743281118501" duration="12000" />
+      <workItem from="1743281179163" duration="111000" />
     </task>
     <servers />
   </component>
