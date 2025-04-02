@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include "Pyramid.h"
+
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -52,10 +54,16 @@ void HelloGL::InitObjects()
 
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
 	for (int i = 0; i < 200; i++)
 	{
 		std::cout << i << std::endl;
-		cube[i] = new Cube(cubeMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+		objects[i] = new Cube(cubeMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	}
+	for (int i = 200; i < 400; i++)
+	{
+		std::cout << i << std::endl;
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
 }
 
@@ -65,9 +73,9 @@ void HelloGL::Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//DRAW METHOD HERE
-	 for (int i = 0; i < 200; i++)
+	 for (int i = 0; i < 400; i++)
 	 {
-	 	cube[i] -> Draw();
+	 	objects[i] -> Draw();
 	 }
 
 	DrawFloorReference();
@@ -111,9 +119,9 @@ void HelloGL::Update()
 	}
 	glutPostRedisplay();
 
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 400; i++)
 	{
-		cube[i] -> Update();
+		objects[i] -> Update();
 	}
 	
 }

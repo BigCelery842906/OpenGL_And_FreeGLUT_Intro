@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-Cube::Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ)
+Cube::Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ) : SceneObject(mesh)
 {
 	_position.x = x;
 	_position.y = y;
@@ -13,8 +13,6 @@ Cube::Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float 
 	_rotation.z = rotZ;
 	
 	rotationCube = 0.0f;
-
-	_mesh = mesh;
 	
 	//DrawCube();
 	DrawIndexedCubeAlt();

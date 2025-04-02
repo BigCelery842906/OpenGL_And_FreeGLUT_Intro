@@ -19,7 +19,7 @@ public:
     void InitGL(int argc, char* argv[]);
     void InitObjects();
     Camera* camera;
-    Cube* cube[200];
+    SceneObject* objects[1000];
     void DrawFloorReference();
     void Display();
     void Update();

@@ -2,18 +2,18 @@
 #include <Windows.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
+
+#include "SceneObject.h"
 #include "GL/freeglut.h"
 #include "Structures.h"
 
-class Cube
+class Cube : public SceneObject
 {
 private:
     float rotationCube;
     
     Vector3 _position;
     Vector3 _rotation;
-
-    Mesh* _mesh;
     
 public:
     Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ);
