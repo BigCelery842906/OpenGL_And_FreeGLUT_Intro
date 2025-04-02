@@ -9,24 +9,19 @@ class Cube
 {
 private:
     float rotationCube;
-    static GLushort* indices;
-    static Vertex* indexedVertices;
-    static Color* indexedColors;
-
-    static int numVertices, numColors, numIndices;
     
     Vector3 _position;
+    Vector3 _rotation;
+
+    Mesh* _mesh;
     
 public:
-    Cube(float x, float y, float z);
+    Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ);
     ~Cube();
     void Draw();
     void Update();
     
     void DrawCube();
-    void DrawIndexedCube();
     void DrawIndexedCubeAlt();
-
-    static bool Load(const char* path);
     
 };

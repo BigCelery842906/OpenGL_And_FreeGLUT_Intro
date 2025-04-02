@@ -7,10 +7,6 @@
 #include "Structures.h"
 #include "Cube.h"
 
-
-
-
-
 class HelloGL
 {
 

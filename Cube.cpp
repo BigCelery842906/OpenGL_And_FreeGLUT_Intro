@@ -3,31 +3,18 @@
 #include <iostream>
 #include <string>
 
-Vertex* Cube::indexedVertices = nullptr;
-Color* Cube::indexedColors = nullptr;
-GLushort* Cube::indices = nullptr;
-
-// GLushort Cube::indices[] =
-//     {
-//     0,1,2, 2,3,0, // front
-//     0,3,4, 4,5,0, // right
-//     0,5,6, 6,1,0, // top
-//     1,6,7, 7,2,1, // left
-//     7,4,3, 3,2,7, // bottom
-//     4,7,6, 6,5,4 }; // back
-
-int Cube::numVertices = 0;
-int Cube::numColors = 0;
-int Cube::numIndices = 0;
-
-Cube::Cube(float x, float y, float z)
+Cube::Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ)
 {
 	_position.x = x;
 	_position.y = y;
 	_position.z = z;
+	_rotation.x = rotX;
+	_rotation.y = rotY;
+	_rotation.z = rotZ;
 	
 	rotationCube = 0.0f;
 
+	_mesh = mesh;
 	
 	//DrawCube();
 	DrawIndexedCubeAlt();
@@ -40,7 +27,7 @@ Cube::~Cube()
 
 void Cube::Draw()
 {
-	if (indexedVertices != nullptr && indexedColors != nullptr && indices != nullptr)
+	if (_mesh->Vertices != nullptr && _mesh->Colors != nullptr && _mesh->Indices != nullptr)
 	{
 		DrawIndexedCubeAlt();
 	}
@@ -151,64 +138,15 @@ void Cube::DrawIndexedCubeAlt()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
-	glVertexPointer(3, GL_FLOAT, 0, indexedVertices);
-	glColorPointer(3, GL_FLOAT, 0, indexedColors);
+	glVertexPointer(3, GL_FLOAT, 0, _mesh->Vertices);
+	glColorPointer(3, GL_FLOAT, 0, _mesh->Colors);
 
 	glPushMatrix();
 	glTranslatef(_position.x, _position.y, _position.z);
-	glRotatef(rotationCube, 1.0f, 1.0f, 1.0f);
-	glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, indices);
+	glRotatef(rotationCube, _rotation.x, _rotation.y, _rotation.z);
+	glDrawElements(GL_TRIANGLES, _mesh->indexCount, GL_UNSIGNED_SHORT, _mesh->Indices);
 	glPopMatrix();
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
-}
-
-bool Cube::Load(const char* path)
-{
-	std::ifstream inFile;
-	inFile.open(path);
-	if (!inFile.good())
-	{
-		std::cerr << "Cant Open Text File " << path << std::endl;
-		return false;
-	}
-
-	inFile >> numVertices;
-	std::cout << "numVertices = " << numVertices << std::endl;
-	indexedVertices = new Vertex[numVertices];
-	for (int i = 0; i < numVertices; i++)
-	{
-	//Use file to populate indexed vertices
-		inFile >> indexedVertices[i].x >> indexedVertices[i].y >> indexedVertices[i].z;
-		std::cout << indexedVertices[i].x << " " << indexedVertices[i].y << " " << indexedVertices[i].z << std::endl;
-		
-	}
-	//Load Color Info
-	inFile >> numColors;
-	std::cout << "numColors = " << numColors << std::endl;
-	indexedColors = new Color[numColors];
-	for (int i = 0; i < numColors; i++)
-	{
-		inFile >> indexedColors[i].r >> indexedColors[i].g >> indexedColors[i].b;
-		std::cout << indexedColors[i].r << " " << indexedColors[i].g << " " << indexedColors[i].b << std::endl;
-		
-	}
-	
-	//Load Indice Info
-	
-	inFile >> numIndices;
-	std::cout << "numIndices = " << numIndices << std::endl;
-
-	indices = new GLushort[numIndices];
-	for (int i = 0; i < numIndices; i++)
-	{
-		std::cout << "Indices Array Triggered";
-		inFile >> indices[i];
-		std::cout << indices[i] << std::endl;
-		
-	}
-
-	inFile.close();
-	return true;
 }
