@@ -6,6 +6,8 @@
 #include <vector>
 #include <Windows.h>
 
+#define NUMOBJECTS 2
+
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	InitGL(argc, argv);
@@ -52,28 +54,27 @@ void HelloGL::InitObjects()
 
 	camera = new Camera();
 
-	camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
+	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
 	//camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
-	camera-> center.x = 0.0f; camera-> center.y = 0.0f; camera-> center.z = 0.0f;
-	camera-> up.x = 0.0f; camera-> up.y = 1.0f; camera-> up.z = 0.0f;
+	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
+	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
 
 
-	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
-	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
+	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
 
 	Texture2D* texture = new Texture2D();
 	texture->Load("penguins.raw",512,512);
 	
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < NUMOBJECTS; i++)
 	{
-		std::cout << i << std::endl;
 		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
-	for (int i = 200; i < 400; i++)
-	{
-		std::cout << i << std::endl;
-		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
-	}
+	//for (int i = 201; i < 400; i++)
+	//{
+	//	std::cout << i << std::endl;
+	//	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	//}
 }
 
 
@@ -82,12 +83,11 @@ void HelloGL::Display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//DRAW METHOD HERE
-	 for (int i = 0; i < 400; i++)
+	 for (int i = 0; i < NUMOBJECTS; i++)
 	 {
-	 	objects[i] -> Draw();
+	 	objects[i]->Draw();
 	 }
-
-	DrawFloorReference();
+	//DrawFloorReference();
 	//glEnd();
 	
 	glFlush();
@@ -120,19 +120,19 @@ void HelloGL::Update()
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
 	
 	
-	Sleep(5);
-	rotation += 0.5f;
-	if (rotation >= 360.0f)
-	{
-		rotation =0.0f;
-	}
-	glutPostRedisplay();
+	// Sleep(5);
+	//rotation += 0.5f;
+	//if (rotation >= 360.0f)
+	//{
+	//	rotation =0.0f;
+	//}
 
-	for (int i = 0; i < 400; i++)
-	{
-		objects[i] -> Update();
-	}
+	//for (int i = 0; i < 400; i++)
+	//{
+	//	objects[i] -> Update();
+	//}
 	
+	glutPostRedisplay();
 }
 
 

@@ -20,7 +20,9 @@ public:
     void InitGL(int argc, char* argv[]);
     void InitObjects();
     Camera* camera;
+
     SceneObject* objects[1000];
+
     void DrawFloorReference();
     void Display();
     void Update();

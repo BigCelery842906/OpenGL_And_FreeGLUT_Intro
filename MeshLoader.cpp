@@ -9,22 +9,7 @@ using namespace std;
 namespace MeshLoader
 {
 
-	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
-	{
-		inFile >> mesh.TexCoordCount;
-		std::cout << "Number of Texture Coords: " << mesh.TexCoordCount << std::endl;
-		if (mesh.TexCoordCount > 0)
-		{
-			mesh.TexCoords = new TexCoord[mesh.TexCoordCount];
-
-			for (int i = 0; i < mesh.TexCoordCount; i++)
-			{
-				inFile >> mesh.TexCoords[i].u;
-				inFile >> mesh.TexCoords[i].v;
-				std::cout << mesh.TexCoords[i].u << " " << mesh.TexCoords[i].v << std::endl;
-			}
-		}
-	}
+	
 
 	
 	void LoadVertices(ifstream& inFile, Mesh& mesh)
@@ -59,8 +44,25 @@ namespace MeshLoader
 				inFile >> mesh.Colors[i].r;
 				inFile >> mesh.Colors[i].g;
 				inFile >> mesh.Colors[i].b;
-				std::cout << mesh.Colors[i].r << " " << mesh.Colors[i].g << std::endl;
+				std::cout << mesh.Colors[i].r << " " << mesh.Colors[i].g << " " << mesh.Colors[i].b << std::endl;
 				
+			}
+		}
+	}
+
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
+	{
+		inFile >> mesh.TexCoordCount;
+		std::cout << "Number of Texture Coords: " << mesh.TexCoordCount << std::endl;
+		if (mesh.TexCoordCount > 0)
+		{
+			mesh.TexCoords = new TexCoord[mesh.TexCoordCount];
+
+			for (int i = 0; i < mesh.TexCoordCount; i++)
+			{
+				inFile >> mesh.TexCoords[i].u;
+				inFile >> mesh.TexCoords[i].v;
+				std::cout << mesh.TexCoords[i].u << " " << mesh.TexCoords[i].v << std::endl;
 			}
 		}
 	}
@@ -81,7 +83,7 @@ namespace MeshLoader
 		}
 	}
 
-	Mesh* MeshLoader::Load(char* path)
+	Mesh* MeshLoader::Load(char* path, bool isPyramid)
 	{
 		Mesh* mesh = new Mesh();
 
@@ -89,14 +91,18 @@ namespace MeshLoader
 
 		inFile.open(path);
 
-		if (!inFile.good())  
+		if (!inFile.good())
 		{
-			cerr  << "Can't open texture file " << path << endl;
+			cerr << "Can't open texture file " << path << endl;
 			return nullptr;
 		}
 
 		LoadVertices(inFile, *mesh);
 		LoadColours(inFile, *mesh);
+		if (!isPyramid)
+		{
+			LoadTexCoords(inFile, *mesh);
+		}
 		LoadIndices(inFile, *mesh);
 
 		inFile.close();

@@ -5,7 +5,7 @@
 
 namespace MeshLoader
 {
-	Mesh* Load(char* path);
+	Mesh* Load(char* path, bool isPyramid = false);
 	void LoadTexCoords(std::ifstream& inFile, Mesh& mesh);
 	void LoadVertices(std::ifstream& inFile, Mesh& mesh);
 	void LoadColours(std::ifstream& inFile, Mesh& mesh);

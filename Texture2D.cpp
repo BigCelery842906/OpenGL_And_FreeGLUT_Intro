@@ -35,7 +35,7 @@ bool Texture2D::Load(const char* path, int width, int height)
     inFile.seekg (0, std::ios::beg); //Go to beginning of file
     inFile.read(tempTextureData, fileSize); //Read all data
     inFile.close();
-    std::cout << "Loading texture: " << path << std::endl;
+    std::cout << "Loaded texture: " << path << std::endl;
 
     glGenTextures(1, &_ID);
     glBindTexture(GL_TEXTURE_2D, _ID);
