@@ -1,6 +1,6 @@
 #pragma once
 #include <fstream>
-
+#include <Windows.h>
 #include "Structures.h"
 
 namespace MeshLoader

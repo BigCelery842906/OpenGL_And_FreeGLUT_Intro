@@ -2,9 +2,9 @@
 #include <Windows.h>
 #include <gl\GL.h>
 #include <gl\GLU.h>
-
-#include "SceneObject.h"
 #include "GL/freeglut.h"
+#include "SceneObject.h"
+
 #include "Structures.h"
 
 class Cube : public SceneObject

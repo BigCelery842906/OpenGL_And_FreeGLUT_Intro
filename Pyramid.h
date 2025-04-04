@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "SceneObject.h"
+#include <Windows.h>
 
 class Pyramid : public SceneObject
 {
