@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <Windows.h>
 #include <gl\gl.h>
+#include <gl\glu.h>
+#include "GL/freeglut.h"
+#include "GL/glut.h"
 
 #define REFRESHRATE 16 //This is in ms not FPS
 

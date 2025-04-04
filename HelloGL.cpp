@@ -1,11 +1,10 @@
 ﻿#include "HelloGL.h"
 #include "MeshLoader.h"
-
+#include "Pyramid.h"
+#include "Texture2D.h"
 #include <iostream>
 #include <vector>
-
-#include "Pyramid.h"
-
+#include <Windows.h>
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -55,6 +54,10 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt");
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
+
+	Texture2D* texture = new Texture2D();
+	texture->Load("stars.raw",512,512);
+	
 	for (int i = 0; i < 200; i++)
 	{
 		std::cout << i << std::endl;

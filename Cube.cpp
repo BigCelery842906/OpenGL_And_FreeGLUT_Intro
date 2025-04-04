@@ -139,6 +139,7 @@ void Cube::DrawIndexedCubeAlt()
 	glVertexPointer(3, GL_FLOAT, 0, _mesh->Vertices);
 	glColorPointer(3, GL_FLOAT, 0, _mesh->Colors);
 
+	
 	glPushMatrix();
 	glTranslatef(_position.x, _position.y, _position.z);
 	glRotatef(rotationCube, _rotation.x, _rotation.y, _rotation.z);
