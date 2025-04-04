@@ -8,6 +8,25 @@ using namespace std;
 
 namespace MeshLoader
 {
+
+	void LoadTexCoords(ifstream& inFile, Mesh& mesh)
+	{
+		inFile >> mesh.TexCoordCount;
+		std::cout << "Number of Texture Coords: " << mesh.TexCoordCount << std::endl;
+		if (mesh.TexCoordCount > 0)
+		{
+			mesh.TexCoords = new TexCoord[mesh.TexCoordCount];
+
+			for (int i = 0; i < mesh.TexCoordCount; i++)
+			{
+				inFile >> mesh.TexCoords[i].u;
+				inFile >> mesh.TexCoords[i].v;
+				std::cout << mesh.TexCoords[i].u << " " << mesh.TexCoords[i].v << std::endl;
+			}
+		}
+	}
+
+	
 	void LoadVertices(ifstream& inFile, Mesh& mesh)
 	{
 		inFile >> mesh.vertexCount;

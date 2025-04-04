@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-Cube::Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ) : SceneObject(mesh)
+Cube::Cube(Mesh* mesh, Texture2D* Texture2D,float x, float y, float z, float rotX, float rotY, float rotZ) : SceneObject(mesh, Texture2D)
 {
 	_position.x = x;
 	_position.y = y;
@@ -27,10 +27,12 @@ void Cube::Draw()
 {
 	if (_mesh->Vertices != nullptr && _mesh->Colors != nullptr && _mesh->Indices != nullptr)
 	{
+		std::cout << "Indexed Cube method used." << std::endl;
 		DrawIndexedCubeAlt();
 	}
 	else
 	{
+		std::cerr << "Normal Cube method used, failed to get the required variables." << std::endl;
 		DrawCube();
 	}
 }
@@ -134,11 +136,14 @@ void Cube::DrawCube()
 
 void Cube::DrawIndexedCubeAlt()
 {
+	glBindTexture(GL_TEXTURE_2D, _texture->GetID());
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glVertexPointer(3, GL_FLOAT, 0, _mesh->Vertices);
 	glColorPointer(3, GL_FLOAT, 0, _mesh->Colors);
 
+	glTexCoordPointer(2,GL_FLOAT,0,_mesh->TexCoords);
 	
 	glPushMatrix();
 	glTranslatef(_position.x, _position.y, _position.z);
@@ -148,4 +153,5 @@ void Cube::DrawIndexedCubeAlt()
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 }

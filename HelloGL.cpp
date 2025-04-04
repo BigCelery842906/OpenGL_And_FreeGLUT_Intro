@@ -37,7 +37,13 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glMatrixMode(GL_MODELVIEW);
 	
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
+	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
 void HelloGL::InitObjects()
@@ -56,12 +62,12 @@ void HelloGL::InitObjects()
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt");
 
 	Texture2D* texture = new Texture2D();
-	texture->Load("stars.raw",512,512);
+	texture->Load("penguins.raw",512,512);
 	
 	for (int i = 0; i < 200; i++)
 	{
 		std::cout << i << std::endl;
-		objects[i] = new Cube(cubeMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
 	for (int i = 200; i < 400; i++)
 	{

@@ -16,7 +16,7 @@ private:
     Vector3 _rotation;
     
 public:
-    Cube(Mesh* mesh, float x, float y, float z, float rotX, float rotY, float rotZ);
+    Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z, float rotX, float rotY, float rotZ);
     ~Cube();
     void Draw();
     void Update();
