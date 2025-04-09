@@ -14,6 +14,7 @@ class HelloGL
 private:
     float rotation;
     
+    
 public:
     
     HelloGL(int argc, char* argv[]);

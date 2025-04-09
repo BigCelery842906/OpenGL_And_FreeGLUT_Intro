@@ -6,7 +6,7 @@
 #include <vector>
 #include <Windows.h>
 
-#define NUMOBJECTS 2
+#define NUMOBJECTS 200
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -40,12 +40,9 @@ void HelloGL::InitGL(int argc, char* argv[])
 	
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glEnable(GL_TEXTURE_2D);
-	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	
 }
 
 void HelloGL::InitObjects()
@@ -64,17 +61,19 @@ void HelloGL::InitObjects()
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
 
 	Texture2D* texture = new Texture2D();
-	texture->Load("penguins.raw",512,512);
+	texture->Load("Penguins.raw",512,512);
+	std::cout << "Texture pointer: " << texture << std::endl;
+	std::cout << "Texture ID: " << texture->GetID() << std::endl;
 	
 	for (int i = 0; i < NUMOBJECTS; i++)
 	{
 		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
-	//for (int i = 201; i < 400; i++)
-	//{
-	//	std::cout << i << std::endl;
-	//	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
-	//}
+	for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
+	{
+		std::cout << i << std::endl;
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	}
 }
 
 
@@ -85,9 +84,10 @@ void HelloGL::Display()
 	//DRAW METHOD HERE
 	 for (int i = 0; i < NUMOBJECTS; i++)
 	 {
-	 	objects[i]->Draw();
+	 	if (objects[i] != nullptr)
+	 		objects[i]->Draw();
 	 }
-	//DrawFloorReference();
+	DrawFloorReference();
 	//glEnd();
 	
 	glFlush();
@@ -121,16 +121,16 @@ void HelloGL::Update()
 	
 	
 	// Sleep(5);
-	//rotation += 0.5f;
-	//if (rotation >= 360.0f)
-	//{
-	//	rotation =0.0f;
-	//}
+	rotation += 0.5f;
+	if (rotation >= 360.0f)
+	{
+		rotation =0.0f;
+	}
 
-	//for (int i = 0; i < 400; i++)
-	//{
-	//	objects[i] -> Update();
-	//}
+	for (int i = 0; i < 400; i++)
+	{
+		objects[i] -> Update();
+	}
 	
 	glutPostRedisplay();
 }

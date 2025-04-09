@@ -14,8 +14,10 @@ Cube::Cube(Mesh* mesh, Texture2D* Texture2D,float x, float y, float z, float rot
 	
 	rotationCube = 0.0f;
 	
+	//glBindTexture(GL_TEXTURE_2D, _texture->GetID());
+	
 	// DrawCube();
-	// DrawIndexedCubeAlt();
+	DrawIndexedCubeAlt();
 }
 
 Cube::~Cube()
@@ -27,7 +29,7 @@ void Cube::Draw()
 {
 	if (_mesh->Vertices != nullptr && _mesh->Colors != nullptr && _mesh->Indices != nullptr)
 	{
-		std::cout << "Indexed Cube method used." << std::endl;
+		//std::cout << "Indexed Cube method used." << std::endl;
 		DrawIndexedCubeAlt();
 	}
 	else
@@ -145,6 +147,7 @@ void Cube::DrawIndexedCubeAlt()
 	glColorPointer(3, GL_FLOAT, 0, _mesh->Colors);
 
 	glTexCoordPointer(2,GL_FLOAT,0,_mesh->TexCoords);
+
 	
 	glPushMatrix();
 

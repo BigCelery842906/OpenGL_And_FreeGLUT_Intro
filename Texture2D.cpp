@@ -31,16 +31,17 @@ bool Texture2D::Load(const char* path, int width, int height)
 
     inFile.seekg(0, std::ios::end); //Seek to end of file
     fileSize = (int)inFile.tellg(); //Get current position (End) to get file size
-    tempTextureData = new char [fileSize]; //Create new array
+    tempTextureData = new char[fileSize]; //Create new array
     inFile.seekg (0, std::ios::beg); //Go to beginning of file
     inFile.read(tempTextureData, fileSize); //Read all data
     inFile.close();
     std::cout << "Loaded texture: " << path << std::endl;
-
     glGenTextures(1, &_ID);
     glBindTexture(GL_TEXTURE_2D, _ID);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     gluBuild2DMipmaps(GL_TEXTURE_2D, 3,width,height,GL_RGB,GL_UNSIGNED_BYTE,tempTextureData);
-
+    
     delete[] tempTextureData;
     return true;
 }

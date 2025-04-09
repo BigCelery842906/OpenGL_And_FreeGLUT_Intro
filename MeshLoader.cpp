@@ -83,7 +83,7 @@ namespace MeshLoader
 		}
 	}
 
-	Mesh* MeshLoader::Load(char* path, bool isPyramid)
+	Mesh* Load(char* path, bool isPyramid)
 	{
 		Mesh* mesh = new Mesh();
 
