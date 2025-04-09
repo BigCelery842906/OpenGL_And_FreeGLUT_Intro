@@ -7,6 +7,10 @@
 #include <Windows.h>
 
 #define NUMOBJECTS 200
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 800
+
+static HelloGL* activeInstance = nullptr;
 
 HelloGL::HelloGL(int argc, char* argv[])
 {
@@ -24,7 +28,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_DEPTH_TEST);
 	
 	glutInitWindowPosition(1000,100);
-	glutInitWindowSize(800, 800);
+	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("Basically like that one game");
 	
 	glutDisplayFunc(GLUTCallbacks::Display);
@@ -42,6 +46,9 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+
+	activeInstance = this;
+	glutPassiveMotionFunc(HelloGL::MouseMotion);
 	
 }
 
@@ -88,7 +95,6 @@ void HelloGL::Display()
 	 		objects[i]->Draw();
 	 }
 	DrawFloorReference();
-	//glEnd();
 	
 	glFlush();
 	glutSwapBuffers();
@@ -139,30 +145,57 @@ void HelloGL::Update()
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
 	key = tolower(key); //Converts upper into lower, making sure it will always fire
+	
 	if (key == 'w')
 	{
-		camera-> center.x -= 0.1f;
+		camera->center.x -= 0.1f;
 	}
 	else if (key == 's')
 	{
-		camera-> center.x += 0.1f;
+		camera->center.x += 0.1f;
 	}
 	else if (key == 'a')
 	{
-		camera-> center.z += 0.1f;
+		camera->center.z += 0.1f;
 	}
 	else if (key == 'd')
 	{
-		camera-> center.z -= 0.1f;
+		camera->center.z -= 0.1f;
 	}
 	else if (key == 'q')
 	{
-		camera-> center.y -= 0.1f;
+		camera->center.y -= 0.1f;
 	}
 	else if (key == 'e')
 	{
-		camera-> center.y += 0.1f;
+		camera->center.y += 0.1f;
 	}
+}
+
+void HelloGL::MouseMotion(int x, int y)
+{
+	if (activeInstance) //This has to be an instance otherwise it throws an error for being non-static
+	{
+		activeInstance->UpdateCameraFromMouse(x, y); //Pass through directly to this non-static function
+	}
+}
+
+void HelloGL::UpdateCameraFromMouse(int x, int y)
+{
+	int screenMiddle = 0.5 * SCREEN_WIDTH;
+	std::cout << "Mouse is at: " << screenMiddle - x << ", " << screenMiddle - y << std::endl;
+
+	static int lastX = screenMiddle;
+	static int lastY = screenMiddle;
+
+	int deltaX = lastX - x;
+	int deltaY = lastY - y;
+	
+	camera->eye.x += deltaX * 0.01f;
+	camera->eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
+
+	lastX = x;
+	lastY = y;
 }
 
 

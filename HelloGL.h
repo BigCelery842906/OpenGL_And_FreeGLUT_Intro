@@ -28,7 +28,9 @@ public:
     void Display();
     void Update();
     void Keyboard(unsigned char key, int x, int y);
-    
+    void static MouseMotion(int x, int y);
+    void UpdateCameraFromMouse(int x, int y);
+
     ~HelloGL(void);
 
 };
