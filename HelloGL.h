@@ -13,6 +13,8 @@ class HelloGL
 
 private:
     float rotation;
+    int screenMiddleWidth;
+    int screenMiddleHeight;
     
     
 public:

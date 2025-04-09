@@ -6,9 +6,6 @@
 #include <vector>
 #include <Windows.h>
 
-#define NUMOBJECTS 200
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
 
 static HelloGL* activeInstance = nullptr;
 
@@ -27,7 +24,10 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glEnable(GL_DEPTH_TEST);
 	
-	glutInitWindowPosition(1000,100);
+	glutInitWindowPosition(1920- SCREEN_WIDTH, 1080- SCREEN_HEIGHT);
+
+	screenMiddleWidth = SCREEN_WIDTH/2;
+	screenMiddleHeight = SCREEN_HEIGHT/2;
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("Basically like that one game");
 	
@@ -37,8 +37,8 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	glViewport(0,0,800,800);
-	gluPerspective(70,1,0,1000);
+	glViewport(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
+	gluPerspective(70,SCREEN_WIDTH/SCREEN_HEIGHT,0,1000);
 	
 	glMatrixMode(GL_MODELVIEW);
 	
@@ -182,11 +182,11 @@ void HelloGL::MouseMotion(int x, int y)
 
 void HelloGL::UpdateCameraFromMouse(int x, int y)
 {
-	int screenMiddle = 0.5 * SCREEN_WIDTH;
-	std::cout << "Mouse is at: " << screenMiddle - x << ", " << screenMiddle - y << std::endl;
+	
+	std::cout << "Mouse is at: " << screenMiddleWidth - x << ", " << screenMiddleHeight - y << std::endl;
 
-	static int lastX = screenMiddle;
-	static int lastY = screenMiddle;
+	static int lastX = screenMiddleWidth;
+	static int lastY = screenMiddleHeight;
 
 	int deltaX = lastX - x;
 	int deltaY = lastY - y;
