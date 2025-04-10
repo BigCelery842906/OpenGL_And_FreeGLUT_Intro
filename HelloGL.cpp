@@ -13,7 +13,8 @@ static HelloGL* activeInstance = nullptr;
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	InitGL(argc, argv);
-	InitObjects();	
+	InitLighting();
+	InitObjects();
 	
 	glutMainLoop();
 }
@@ -50,6 +51,9 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 	activeInstance = this;
 	glutPassiveMotionFunc(HelloGL::MouseMotion);
+
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	
 }
 
@@ -66,7 +70,7 @@ void HelloGL::InitObjects()
 
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
-	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
+	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
 
 	Texture2D* texture = new Texture2D();
 	texture->Load("Penguins.raw",512,512);
@@ -77,11 +81,35 @@ void HelloGL::InitObjects()
 	{
 		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
-	for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
-	{
-		std::cout << i << std::endl;
-		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
-	}
+	// for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
+	// {
+	// 	std::cout << i << std::endl;
+	// 	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	// }
+}
+
+void HelloGL::InitLighting()
+{
+	_lightPosition = new Vector4();
+	_lightPosition->x = 0.0f;
+	_lightPosition->y = 0.0f;
+	_lightPosition->z = 0.0f;
+	_lightPosition->w = 1.0f;
+
+	_lightData = new Lighting();
+	_lightData->Ambient.x = 0.2f;
+	_lightData->Ambient.y = 0.2f;
+	_lightData->Ambient.z = 0.2f;
+	_lightData->Ambient.w = 1.0f;
+	_lightData->Diffuse.x = 0.8f;
+	_lightData->Diffuse.y = 0.8f;
+	_lightData->Diffuse.z = 0.8f;
+	_lightData->Diffuse.w = 1.0f;
+	_lightData->Specular.x = 0.2f;
+	_lightData->Specular.y = 0.2f;
+	_lightData->Specular.z = 0.2f;
+	_lightData->Specular.w = 1.0f;
+	
 }
 #pragma endregion
 
@@ -95,7 +123,7 @@ void HelloGL::Display()
 	 	if (objects[i] != nullptr)
 	 		objects[i]->Draw();
 	 }
-	DrawFloorReference();
+	//DrawFloorReference();
 	
 	glFlush();
 	glutSwapBuffers();
@@ -106,26 +134,30 @@ HelloGL::~HelloGL(void)
 
 }
 
-void HelloGL::DrawFloorReference()
-{
-	glPushMatrix();
-	glBegin(GL_POLYGON);
-	{
-		glColor3f(.5,0,.5);
-		glVertex3f(10,-4,10);
-		glVertex3f(10,-4,-10);
-		glVertex3f(-10,-4,-10);
-		glVertex3f(-10,-4,10);
-	}
-	glEnd();
-	glPopMatrix();
-}
+// void HelloGL::DrawFloorReference()
+// {
+// 	glPushMatrix();
+// 	glBegin(GL_POLYGON);
+// 	{
+// 		glColor3f(.5,0,.5);
+// 		glVertex3f(10,-4,10);
+// 		glVertex3f(10,-4,-10);
+// 		glVertex3f(-10,-4,-10);
+// 		glVertex3f(-10,-4,10);
+// 	}
+// 	glEnd();
+// 	glPopMatrix();
+// }
 
 void HelloGL::Update()
 {
 	glLoadIdentity();
 	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
-	
+
+	glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->Ambient.x));
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(_lightData->Diffuse.x));
+	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->Specular.x));
+	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
 	
 	// Sleep(5);
 	rotation += 0.5f;
@@ -136,7 +168,8 @@ void HelloGL::Update()
 
 	for (int i = 0; i < 2*NUMOBJECTS; i++)
 	{
-		objects[i] -> Update();
+		if (objects[i] != nullptr)
+			objects[i] -> Update();
 	}
 	
 	glutPostRedisplay();

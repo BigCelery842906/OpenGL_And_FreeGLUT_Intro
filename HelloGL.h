@@ -16,16 +16,19 @@ private:
     int screenMiddleWidth;
     int screenMiddleHeight;
 
+    Vector4* _lightPosition;
+    Lighting* _lightData;
 public:
     
     HelloGL(int argc, char* argv[]);
     void InitGL(int argc, char* argv[]);
     void InitObjects();
+    void InitLighting();
+    ~HelloGL(void);
     
     Camera* camera;
     SceneObject* objects[1000];
-
-    void DrawFloorReference();
+    
     void Display();
     void Update();
     void Keyboard(unsigned char key, int x, int y);
@@ -33,6 +36,7 @@ public:
     void static MouseMotion(int x, int y);
     void UpdateCameraFromMouse(int x, int y);
 
-    ~HelloGL(void);
+    
+    
 };
 

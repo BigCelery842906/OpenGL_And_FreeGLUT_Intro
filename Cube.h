@@ -14,6 +14,8 @@ private:
     
     Vector3 _position;
     Vector3 _rotation;
+
+    Material* _material;
     
 public:
     Cube(Mesh* mesh, Texture2D* texture, float x, float y, float z, float rotX, float rotY, float rotZ);
@@ -21,6 +23,6 @@ public:
     void Draw();
     void Update();
     
-    void DrawCube();
     void DrawIndexedCubeAlt();
+    void MaterialDraw();
 };

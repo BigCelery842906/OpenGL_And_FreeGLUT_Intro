@@ -26,7 +26,7 @@ namespace MeshLoader
 		}
 	}
 
-	void LoadColours(ifstream& inFile, Mesh& mesh)
+	/*void LoadColours(ifstream& inFile, Mesh& mesh)
 	{
 		inFile >> mesh.colorCount;
 		std::cout << "Number of Colours: " << mesh.colorCount << std::endl;
@@ -41,6 +41,23 @@ namespace MeshLoader
 				inFile >> mesh.Colors[i].b;
 				std::cout << mesh.Colors[i].r << " " << mesh.Colors[i].g << " " << mesh.Colors[i].b << std::endl;
 				
+			}
+		}
+	}*/
+
+	void LoadNormals(ifstream& inFile, Mesh& mesh)
+	{
+		inFile >> mesh.normalCount;
+		std::cout << "Number of Normals: " << mesh.normalCount << std::endl;
+		if (mesh.normalCount > 0)
+		{
+			mesh.Normals = new Vector3[mesh.normalCount];
+			for (int i = 0; i < mesh.normalCount; i++)
+			{
+				inFile >> mesh.Normals[i].x;
+				inFile >> mesh.Normals[i].y;
+				inFile >> mesh.Normals[i].z;
+				std::cout << mesh.Normals[i].x << " " << mesh.Normals[i].y << " " << mesh.Normals[i].z << std::endl;
 			}
 		}
 	}
@@ -93,11 +110,11 @@ namespace MeshLoader
 		}
 
 		LoadVertices(inFile, *mesh);
-		LoadColours(inFile, *mesh);
 		if (!isPyramid)
 		{
 			LoadTexCoords(inFile, *mesh);
 		}
+		LoadNormals(inFile, *mesh);
 		LoadIndices(inFile, *mesh);
 
 		inFile.close();

@@ -13,7 +13,8 @@ Cube::Cube(Mesh* mesh, Texture2D* Texture2D,float x, float y, float z, float rot
 	_rotation.z = rotZ;
 	
 	rotationCube = 0.0f;
-	
+
+	_material = new Material();
 }
 
 Cube::~Cube()
@@ -23,15 +24,10 @@ Cube::~Cube()
 
 void Cube::Draw()
 {
-	if (_mesh->Vertices != nullptr && _mesh->Colors != nullptr && _mesh->Indices != nullptr)
+	if (_mesh->Vertices != nullptr && _mesh->Normals != nullptr && _mesh->Indices != nullptr)
 	{
 		//std::cout << "Indexed Cube method used." << std::endl;
 		DrawIndexedCubeAlt();
-	}
-	else
-	{
-		std::cerr << "Normal Cube method used, failed to get the required variables." << std::endl;
-		DrawCube();
 	}
 }
 
@@ -52,98 +48,24 @@ void Cube::Update()
 	}	
 }
 
-void Cube::DrawCube()
-{
-	glPushMatrix();
-	glTranslatef(_position.x, _position.y, _position.z);
-	glRotatef(rotationCube, 1.0f, 1.0f, 1.0f);
-
-#pragma region CUBETIME
-	glBegin(GL_POLYGON);
-	glColor4f(0,0,0,0);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glColor4f(1,0,0,0);
-	glVertex3f(0.5, -0.5, 0.5);
-	glColor4f(1,1,0,0);
-	glVertex3f(0.5, 0.5, 0.5);
-	glColor4f(0,1,0,0);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor4f(0,1,0,0);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glColor4f(1,1,0,0);
-	glVertex3f(0.5, 0.5, 0.5);
-	glColor4f(0,1,1,0);
-	glVertex3f(0.5, 0.5, -0.5);
-	glColor4f(0,0,1,0);
-	glVertex3f(-0.5, 0.5, -0.5); //minus in here
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor4f(0,0,1,0);
-	glVertex3f(-0.5, 0.5, -0.5);
-	glColor4f(0,1,1,0);
-	glVertex3f(0.5, 0.5, -0.5);
-	glColor4f(1,0,1,0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glColor4f(1,1,1,0);
-	glVertex3f(-0.5, -0.5, -0.5);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor4f(1,1,1,0);
-	glVertex3f(-0.5, -0.5, -0.5);
-	glColor4f(1,0,1,0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glColor4f(1,0,0,0);
-	glVertex3f(0.5, -0.5, 0.5);
-	glColor4f(0,0,0,0);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor4f(1,0,0,0);
-	glVertex3f(0.5, -0.5, 0.5);
-	glColor4f(1,0,1,0);
-	glVertex3f(0.5, -0.5, -0.5);
-	glColor4f(0,1,1,0);
-	glVertex3f(0.5, 0.5, -0.5);
-	glColor4f(1,1,0,0);
-	glVertex3f(0.5, 0.5, 0.5);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor4f(1,1,1,0);
-	glVertex3f(-0.5, -0.5,-0.5);
-	glColor4f(0,0,0,0);
-	glVertex3f(-0.5, -0.5, 0.5);
-	glColor4f(0,1,0,0);
-	glVertex3f(-0.5, 0.5, 0.5);
-	glColor4f(0,0,1,0);
-	glVertex3f(-0.5, 0.5, -0.5);
-	glEnd();
-
-#pragma endregion
-	
-	glCullFace(GL_BACK);
-	
-	glPopMatrix();
-}
-
 void Cube::DrawIndexedCubeAlt()
 {
 	glBindTexture(GL_TEXTURE_2D, _texture->GetID());
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, _mesh->Vertices);
-	glColorPointer(3, GL_FLOAT, 0, _mesh->Colors);
+	glNormalPointer(GL_FLOAT, 0, _mesh->Normals);
 
 	glTexCoordPointer(2,GL_FLOAT,0,_mesh->TexCoords);
 
+	Cube::MaterialDraw();
+	glMaterialfv(GL_FRONT, GL_AMBIENT, &(_material->Ambient.x));
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, &(_material->Diffuse.x));
+	glMaterialfv(GL_FRONT, GL_SPECULAR, &(_material->Specular.x));
+	glMaterialf(GL_FRONT, GL_SHININESS, _material->Shininess);
+	
 	
 	glPushMatrix();
 
@@ -154,7 +76,22 @@ void Cube::DrawIndexedCubeAlt()
 
 	glPopMatrix();
 
-	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void Cube::MaterialDraw()
+{
+	// _material = new Material();
+	_material->Ambient.x = 0.05f; _material->Ambient.y = 0.8f; _material->Ambient.z = 0.05f;
+	_material->Ambient.w = 1.0f;
+
+	_material->Diffuse.x=0.8f; _material->Diffuse.y = 0.05f; _material->Diffuse.z = 0.8f;
+	_material->Diffuse.w = 1.0f;
+
+	_material->Specular.x = 1.0f; _material->Specular.y = 1.0f; _material->Specular.z = 1.0f;
+	_material->Specular.w = 1.0f;
+
+	_material->Shininess = 1.0f;
 }

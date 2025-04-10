@@ -6,13 +6,18 @@
 #include "GL/glut.h"
 
 #define REFRESHRATE 16 //This is in ms not FPS
-#define NUMOBJECTS 200 //Number of Cubes and Triangles to Spawn
-#define SCREEN_WIDTH 800 //Width of Window
-#define SCREEN_HEIGHT 800 // Height of Window
+#define NUMOBJECTS 20 //Number of Cubes to Spawn
+#define SCREEN_WIDTH 1080 //Width of Window
+#define SCREEN_HEIGHT 1080 // Height of Window
 
 struct Vector3
 {
     float x,y,z;
+};
+
+struct Vector4
+{
+    float x,y,z,w;
 };
 
 struct Camera
@@ -37,8 +42,19 @@ struct TexCoord
 struct Mesh
 {
     Vertex* Vertices;
-    Color* Colors;
+    Vector3* Normals;
     TexCoord* TexCoords;
     GLushort* Indices;
-    int vertexCount, colorCount, TexCoordCount, indexCount;
+    int vertexCount, normalCount, TexCoordCount, indexCount;
+};
+
+struct Lighting
+{
+    Vector4 Ambient, Diffuse, Specular;
+};
+
+struct Material
+{
+    Vector4 Ambient, Diffuse, Specular;
+    GLfloat Shininess;
 };
