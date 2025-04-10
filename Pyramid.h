@@ -4,7 +4,6 @@
 
 class Pyramid : public SceneObject
 {
-
 private:
     float rotationPyramid;
 
@@ -17,5 +16,4 @@ public:
     void Update();
     void DrawPyramid();
     void Draw() override;
-    
 };

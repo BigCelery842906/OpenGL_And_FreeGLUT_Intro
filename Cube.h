@@ -23,5 +23,4 @@ public:
     
     void DrawCube();
     void DrawIndexedCubeAlt();
-    
 };

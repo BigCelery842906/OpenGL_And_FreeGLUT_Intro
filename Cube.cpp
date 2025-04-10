@@ -14,10 +14,6 @@ Cube::Cube(Mesh* mesh, Texture2D* Texture2D,float x, float y, float z, float rot
 	
 	rotationCube = 0.0f;
 	
-	//glBindTexture(GL_TEXTURE_2D, _texture->GetID());
-	
-	// DrawCube();
-	DrawIndexedCubeAlt();
 }
 
 Cube::~Cube()

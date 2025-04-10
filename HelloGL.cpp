@@ -9,6 +9,7 @@
 
 static HelloGL* activeInstance = nullptr;
 
+#pragma region HelloGL_Initialisation
 HelloGL::HelloGL(int argc, char* argv[])
 {
 	InitGL(argc, argv);
@@ -82,14 +83,14 @@ void HelloGL::InitObjects()
 		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
 }
-
+#pragma endregion
 
 void HelloGL::Display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//DRAW METHOD HERE
-	 for (int i = 0; i < NUMOBJECTS; i++)
+	 for (int i = 0; i < 2*NUMOBJECTS; i++)
 	 {
 	 	if (objects[i] != nullptr)
 	 		objects[i]->Draw();
@@ -133,14 +134,13 @@ void HelloGL::Update()
 		rotation =0.0f;
 	}
 
-	for (int i = 0; i < 400; i++)
+	for (int i = 0; i < 2*NUMOBJECTS; i++)
 	{
 		objects[i] -> Update();
 	}
 	
 	glutPostRedisplay();
 }
-
 
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
@@ -172,6 +172,7 @@ void HelloGL::Keyboard(unsigned char key, int x, int y)
 	}
 }
 
+#pragma region MouseCameraMovement
 void HelloGL::MouseMotion(int x, int y)
 {
 	if (activeInstance) //This has to be an instance otherwise it throws an error for being non-static
@@ -197,5 +198,5 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	lastX = x;
 	lastY = y;
 }
-
+#pragma endregion
 

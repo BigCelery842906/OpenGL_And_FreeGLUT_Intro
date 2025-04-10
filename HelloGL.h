@@ -15,25 +15,24 @@ private:
     float rotation;
     int screenMiddleWidth;
     int screenMiddleHeight;
-    
-    
+
 public:
     
     HelloGL(int argc, char* argv[]);
     void InitGL(int argc, char* argv[]);
     void InitObjects();
+    
     Camera* camera;
-
     SceneObject* objects[1000];
 
     void DrawFloorReference();
     void Display();
     void Update();
     void Keyboard(unsigned char key, int x, int y);
+    
     void static MouseMotion(int x, int y);
     void UpdateCameraFromMouse(int x, int y);
 
     ~HelloGL(void);
-
 };
 

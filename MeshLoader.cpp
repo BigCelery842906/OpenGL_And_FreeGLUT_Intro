@@ -3,15 +3,10 @@
 #include <iostream>
 #include <fstream>
 #include <gl/GL.h>
-
 using namespace std;
 
 namespace MeshLoader
-{
-
-	
-
-	
+{	
 	void LoadVertices(ifstream& inFile, Mesh& mesh)
 	{
 		inFile >> mesh.vertexCount;

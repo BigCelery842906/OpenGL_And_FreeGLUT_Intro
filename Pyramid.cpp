@@ -10,7 +10,6 @@ Pyramid::Pyramid(Mesh* mesh, float x, float y, float z, float rotX, float rotY, 
     _rotation.z = rotZ;
 	
     rotationPyramid = 0.0f;
-    // DrawPyramid();
 }
 
 Pyramid::~Pyramid()

@@ -10,9 +10,6 @@
 #define SCREEN_WIDTH 800 //Width of Window
 #define SCREEN_HEIGHT 800 // Height of Window
 
-
-
-
 struct Vector3
 {
     float x,y,z;
