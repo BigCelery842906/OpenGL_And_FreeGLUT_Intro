@@ -21,11 +21,11 @@ private:
 public:
     
     HelloGL(int argc, char* argv[]);
+    ~HelloGL(void);
     void InitGL(int argc, char* argv[]);
     void InitObjects();
     void InitLighting();
-    ~HelloGL(void);
-    
+
     Camera* camera;
     SceneObject* objects[1000];
     
@@ -36,7 +36,7 @@ public:
     void static MouseMotion(int x, int y);
     void UpdateCameraFromMouse(int x, int y);
 
-    
+    void DrawString(const char* text, Vector3* position, Color* color);
     
 };
 

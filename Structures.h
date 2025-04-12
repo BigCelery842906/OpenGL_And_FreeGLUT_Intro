@@ -6,7 +6,7 @@
 #include "GL/glut.h"
 
 #define REFRESHRATE 16 //This is in ms not FPS
-#define NUMOBJECTS 20 //Number of Cubes to Spawn
+#define NUMOBJECTS 200 //Number of Cubes to Spawn
 #define SCREEN_WIDTH 1080 //Width of Window
 #define SCREEN_HEIGHT 1080 // Height of Window
 
