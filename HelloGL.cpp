@@ -23,16 +23,17 @@ void HelloGL::InitGL(int argc, char* argv[])
 {
 	GLUTCallbacks::Init(this);
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-	glEnable(GL_DEPTH_TEST);
+	glutInitDisplayMode(GLUT_DOUBLE |  GLUT_DEPTH);
 	
-	glutInitWindowPosition(1920- SCREEN_WIDTH, 1080- SCREEN_HEIGHT);
+	glutInitWindowPosition(1920 - SCREEN_WIDTH, 1080 - SCREEN_HEIGHT);
 
 	screenMiddleWidth = SCREEN_WIDTH/2;
 	screenMiddleHeight = SCREEN_HEIGHT/2;
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("Basically like that one game");
 	
+	glutPassiveMotionFunc(HelloGL::MouseMotion);
+	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
 	
@@ -40,17 +41,16 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glLoadIdentity();
 
 	glViewport(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
-	gluPerspective(70,SCREEN_WIDTH/SCREEN_HEIGHT,0,1000);
+	gluPerspective(70,SCREEN_WIDTH/SCREEN_HEIGHT,0.1,1000);
 	
 	glMatrixMode(GL_MODELVIEW);
 	
-	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
 	activeInstance = this;
-	glutPassiveMotionFunc(HelloGL::MouseMotion);
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -83,7 +83,6 @@ void HelloGL::InitObjects()
 	}
 	// for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
 	// {
-	// 	std::cout << i << std::endl;
 	// 	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	// }
 }

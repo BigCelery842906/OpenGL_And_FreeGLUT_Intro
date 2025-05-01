@@ -45,7 +45,8 @@ void Cube::Update()
 	else
 	{
 		_position.z = -100;
-	}	
+	}
+	
 }
 
 void Cube::DrawIndexedCubeAlt()
