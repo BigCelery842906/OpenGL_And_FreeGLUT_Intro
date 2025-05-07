@@ -1,6 +1,5 @@
 ﻿#include "HelloGL.h"
 #include "MeshLoader.h"
-#include "Pyramid.h"
 #include "Texture2D.h"
 #include <iostream>
 #include <vector>
@@ -73,7 +72,7 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	Mesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
+	//Mesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
 	//std::cout << objMesh;
 	Texture2D* texture = new Texture2D();
 	texture->Load("Penguins.raw",512,512);

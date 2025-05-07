@@ -13,37 +13,19 @@ namespace MeshLoader
 		std::cout << "Number of Vertices: " << mesh.vertexCount << std::endl;
 		if (mesh.vertexCount > 0)
 		{
-			mesh.Vertices = new Vertex[mesh.vertexCount];
-
+			Vertex tempVertex;
 			for (int i = 0; i < mesh.vertexCount; i++)
 			{
-				inFile >> mesh.Vertices[i].x;
-				inFile >> mesh.Vertices[i].y;
-				inFile >> mesh.Vertices[i].z;
+				
+				inFile >> tempVertex.x;
+				inFile >> tempVertex.y;
+				inFile >> tempVertex.z;
+				mesh.Vertices.push_back(tempVertex);
 				std::cout << mesh.Vertices[i].x << " " << mesh.Vertices[i].y << " " << mesh.Vertices[i].z << std::endl;
 				
 			}
 		}
 	}
-
-	/*void LoadColours(ifstream& inFile, Mesh& mesh)
-	{
-		inFile >> mesh.colorCount;
-		std::cout << "Number of Colours: " << mesh.colorCount << std::endl;
-		if (mesh.colorCount > 0)
-		{
-			mesh.Colors = new Color[mesh.colorCount];
-			
-			for (int i = 0; i < mesh.colorCount; i++)
-			{
-				inFile >> mesh.Colors[i].r;
-				inFile >> mesh.Colors[i].g;
-				inFile >> mesh.Colors[i].b;
-				std::cout << mesh.Colors[i].r << " " << mesh.Colors[i].g << " " << mesh.Colors[i].b << std::endl;
-				
-			}
-		}
-	}*/
 
 	void LoadNormals(ifstream& inFile, Mesh& mesh)
 	{
@@ -51,12 +33,13 @@ namespace MeshLoader
 		std::cout << "Number of Normals: " << mesh.normalCount << std::endl;
 		if (mesh.normalCount > 0)
 		{
-			mesh.Normals = new Vector3[mesh.normalCount];
+			Vector3 tempNormal;
 			for (int i = 0; i < mesh.normalCount; i++)
 			{
-				inFile >> mesh.Normals[i].x;
-				inFile >> mesh.Normals[i].y;
-				inFile >> mesh.Normals[i].z;
+				inFile >> tempNormal.x;
+				inFile >> tempNormal.y;
+				inFile >> tempNormal.z;
+				mesh.Normals.push_back(tempNormal);
 				std::cout << mesh.Normals[i].x << " " << mesh.Normals[i].y << " " << mesh.Normals[i].z << std::endl;
 			}
 		}
@@ -68,12 +51,12 @@ namespace MeshLoader
 		std::cout << "Number of Texture Coords: " << mesh.TexCoordCount << std::endl;
 		if (mesh.TexCoordCount > 0)
 		{
-			mesh.TexCoords = new TexCoord[mesh.TexCoordCount];
-
+			TexCoord tempTexcoord;
 			for (int i = 0; i < mesh.TexCoordCount; i++)
 			{
-				inFile >> mesh.TexCoords[i].u;
-				inFile >> mesh.TexCoords[i].v;
+				inFile >> tempTexcoord.u;
+				inFile >> tempTexcoord.v;
+				mesh.TexCoords.push_back(tempTexcoord);
 				std::cout << mesh.TexCoords[i].u << " " << mesh.TexCoords[i].v << std::endl;
 			}
 		}
@@ -85,11 +68,11 @@ namespace MeshLoader
 		std::cout << "Number of Indices: " << mesh.indexCount << std::endl;
 		if (mesh.indexCount > 0)
 		{
-			mesh.Indices = new GLushort[mesh.indexCount];
-
+			GLushort tempIndex;
 			for (int i = 0; i < mesh.indexCount; i++)
 			{
-				inFile >> mesh.Indices[i];
+				inFile >> tempIndex;
+				mesh.Indices.push_back(tempIndex);
 				std::cout << mesh.Indices[i] << std::endl;
 			}
 		}

@@ -67,15 +67,20 @@ namespace OBJ_Loader
     void LoadVertex(std::string& line, Mesh& objMesh)
     {
         std::cout << "Loading Vertex" << std::endl;
-        scanf_s(line.c_str(), "%f %f %f", objMesh.Vertices[objMesh.vertexCount].x, objMesh.Vertices[objMesh.vertexCount].y, objMesh.Vertices[objMesh.vertexCount].z);
+        Vertex tempVertex;
+        sscanf_s(line.c_str(), "%f %f %f", &tempVertex.x, &tempVertex.y, &tempVertex.z);
+        objMesh.Vertices.push_back(tempVertex);
         objMesh.vertexCount++;
+        
         std::cout << "Loaded Vertex" << std::endl;
     }
 
     void LoadVertexTexture(std::string& line, Mesh& objMesh)
     {
         std::cout << "Loading Vertex Texture" << std::endl;
-        scanf_s(line.c_str(), "%f %f", objMesh.TexCoords[objMesh.TexCoordCount].u, objMesh.TexCoords[objMesh.TexCoordCount].v);
+        TexCoord tempVertexTexture;
+        sscanf_s(line.c_str(), "%f %f", &tempVertexTexture.u, &tempVertexTexture.v);
+        objMesh.TexCoords.push_back(tempVertexTexture);
         objMesh.TexCoordCount++;
         std::cout << "Loaded Vertex Texture" << std::endl;
     }
@@ -83,7 +88,9 @@ namespace OBJ_Loader
     void LoadVertexNormal(std::string& line, Mesh& objMesh)
     {
         std::cout << "Loading Vertex Normal" << std::endl;
-        scanf_s(line.c_str(), "%f %f %f", objMesh.Normals[objMesh.normalCount].x, objMesh.Normals[objMesh.normalCount].y, objMesh.Normals[objMesh.normalCount].z);
+        Vector3 tempVertexNormal;
+        sscanf_s(line.c_str(), "%f %f %f", &tempVertexNormal.x, &tempVertexNormal.y, &tempVertexNormal.z);
+        objMesh.Normals.push_back(tempVertexNormal);
         objMesh.normalCount++;
         std::cout << "Loaded Vertex Normal" << std::endl;
     }
@@ -91,7 +98,12 @@ namespace OBJ_Loader
     void LoadFaceOrder(std::string& line, Mesh& objMesh)
     {
         std::cout << "Loading Face" << std::endl;
-        sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", objMesh.Indices[objMesh.indexCount], objMesh.Indices[objMesh.indexCount+1], objMesh.Indices[objMesh.indexCount+2], objMesh.Indices[objMesh.indexCount+3], objMesh.Indices[objMesh.indexCount+4], objMesh.Indices[objMesh.indexCount+5], objMesh.Indices[objMesh.indexCount+6], objMesh.Indices[objMesh.indexCount+7], objMesh.Indices[objMesh.indexCount+8] );
+        int tempFaces[9];
+        sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempFaces[0], &tempFaces[1], &tempFaces[2], &tempFaces[3], &tempFaces[4], &tempFaces[5], &tempFaces[6], &tempFaces[7], &tempFaces[8]);
+        for (int i = 0; i < 9; i++)
+        {
+            objMesh.Indices.push_back(tempFaces[i]);
+        }
         objMesh.indexCount += 9;
         std::cout << "Loaded Face" << std::endl;
     }
