@@ -6,6 +6,8 @@
 #include <vector>
 #include <Windows.h>
 
+#include "ObjLoader.h"
+
 
 static HelloGL* activeInstance = nullptr;
 
@@ -71,7 +73,8 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-
+	OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
+	//std::cout << objMesh;
 	Texture2D* texture = new Texture2D();
 	texture->Load("Penguins.raw",512,512);
 	std::cout << "Texture pointer: " << texture << std::endl;
