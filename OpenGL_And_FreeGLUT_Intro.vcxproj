@@ -132,6 +132,7 @@
     <ClInclude Include="HelloGL.h" />
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="ObjLoader.h" />
+    <ClInclude Include="OBJObject.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Pyramid.h" />
     <ClInclude Include="Structures.h" />
@@ -144,6 +145,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="ObjLoader.cpp" />
+    <ClCompile Include="OBJObject.cpp" />
     <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="Pyramid.cpp" />
     <ClCompile Include="Texture2D.cpp" />
