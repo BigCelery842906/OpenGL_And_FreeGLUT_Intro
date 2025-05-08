@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <Windows.h>
+#include <cmath>
 
 #include "ObjLoader.h"
 
@@ -29,12 +30,12 @@ void HelloGL::InitGL(int argc, char* argv[])
 	
 	glutInitWindowPosition(1920 - SCREEN_WIDTH, 1080 - SCREEN_HEIGHT);
 
-	screenMiddleWidth = SCREEN_WIDTH/2;
-	screenMiddleHeight = SCREEN_HEIGHT/2;
+	
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("Basically like that one game");
 	
-	glutPassiveMotionFunc(HelloGL::MouseMotion);
+	glutMotionFunc(HelloGL::MouseMotion);
+	glutMouseFunc(HelloGL::MouseButton);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
@@ -184,38 +185,82 @@ void HelloGL::Update()
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
 	key = tolower(key); //Converts upper into lower, making sure it will always fire
+	float CameraMovementSpeed = 0.2f;
+
+	switch (key)
+	{
+	case 'w':
+		{
+			camera->center.z -= CameraMovementSpeed;
+			camera->eye.z -= CameraMovementSpeed;
+			break;
+		}
+	case 's':
+		{
+			camera->center.z += CameraMovementSpeed;
+			camera->eye.z += CameraMovementSpeed;
+			break;
+		}
+	case 'd':
+		{
+			camera->center.x += CameraMovementSpeed;
+			camera->eye.x += CameraMovementSpeed;
+			break;
+		}
+	case 'a':
+		{
+			camera->center.x -= CameraMovementSpeed;
+			camera->eye.x -= CameraMovementSpeed;
+			break;
+		}
+	case 'q':
+		{
+			camera->center.y -= CameraMovementSpeed;
+			camera->eye.y -= CameraMovementSpeed;
+			break;
+		}
+	case 15: //SHIFT???
+		{
+			camera->center.y -= CameraMovementSpeed;
+			camera->eye.y -= CameraMovementSpeed;
+			break;	
+		}
 	
-	if (key == 'w')
-	{
-		camera->center.x -= 0.1f;
-	}
-	else if (key == 's')
-	{
-		camera->center.x += 0.1f;
-	}
-	else if (key == 'a')
-	{
-		camera->center.z += 0.1f;
-	}
-	else if (key == 'd')
-	{
-		camera->center.z -= 0.1f;
-	}
-	else if (key == 'q')
-	{
-		camera->center.y -= 0.1f;
-	}
-	else if (key == 'e')
-	{
-		camera->center.y += 0.1f;
+	case 'e':
+		{
+			camera->center.y += CameraMovementSpeed;
+			camera->eye.y += CameraMovementSpeed;
+			break;
+		}
+	case 32:
+		{
+			camera->center.y += CameraMovementSpeed;
+			camera->eye.y += CameraMovementSpeed;
+			break;
+		}
+	case 27:
+		{
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			break;
+		}
+	default:
+		{
+			break;
+		}
 	}
 }
+
+// Vector3 NormalizeVector(Vector3 inputVector)
+// {
+// 	return Vector3(0.0f,0.0f,0.0f);
+// }
 
 #pragma region MouseCameraMovement
 void HelloGL::MouseMotion(int x, int y)
 {
 	if (activeInstance) //This has to be an instance otherwise it throws an error for being non-static
 	{
+		glutSetCursor(GLUT_CURSOR_NONE);
 		activeInstance->UpdateCameraFromMouse(x, y); //Pass through directly to this non-static function
 	}
 }
@@ -233,9 +278,30 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	
 	camera->eye.x += deltaX * 0.01f;
 	camera->eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
-
+	
+	//glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
 	lastX = x;
 	lastY = y;
+
+}
+
+void HelloGL::MouseButton(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON)
+	{
+		if (state == GLUT_DOWN)
+		{
+			std::cout << "Mouse button pressed\n";
+			glutSetCursor(GLUT_CURSOR_NONE);
+			
+		}
+		else if (state == GLUT_UP)
+		{
+			std::cout << "Mouse button released\n";
+			glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+		}
+	}
 }
 
 #pragma endregion

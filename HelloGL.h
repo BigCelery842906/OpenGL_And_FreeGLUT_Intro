@@ -13,8 +13,8 @@ class HelloGL
 
 private:
     float rotation;
-    int screenMiddleWidth;
-    int screenMiddleHeight;
+    int screenMiddleWidth = SCREEN_WIDTH/2;
+    int screenMiddleHeight = SCREEN_HEIGHT/2;
 
     Vector4* _lightPosition;
     Lighting* _lightData;
@@ -35,6 +35,7 @@ public:
     
     void static MouseMotion(int x, int y);
     void UpdateCameraFromMouse(int x, int y);
+    void static MouseButton(int button, int state, int x, int y);
 
     void DrawString(const char* text, Vector3* position, Color* color);
     
