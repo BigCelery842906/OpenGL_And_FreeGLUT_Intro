@@ -42,6 +42,16 @@ struct TexCoord
 
 struct Mesh
 {
+    Vertex* Vertices;
+    Vector3* Normals;
+    TexCoord* TexCoords;
+    GLushort* Indices;
+    int vertexCount, normalCount, TexCoordCount, indexCount;
+
+};
+
+struct OBJMesh
+{
     std::vector<Vertex> Vertices;
     std::vector<Vector3> Normals;
     std::vector<TexCoord> TexCoords;

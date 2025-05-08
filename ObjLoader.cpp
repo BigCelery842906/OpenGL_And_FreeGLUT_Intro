@@ -8,9 +8,9 @@
 namespace OBJ_Loader
 {
 
-    Mesh* Load(char* path)
+    OBJMesh* Load(char* path)
     {
-        Mesh* objMesh = new Mesh();
+        OBJMesh* objMesh = new OBJMesh();
         std::ifstream objInFile;
 
         std::string objInTemp;
@@ -59,23 +59,25 @@ namespace OBJ_Loader
 
         std::cout << "End of File" << std::endl;
 
+        
+
 
         objInFile.close();
         return objMesh;
     }
 
-    void LoadVertex(std::string& line, Mesh& objMesh)
+    void LoadVertex(std::string& line, OBJMesh& objMesh)
     {
         std::cout << "Loading Vertex" << std::endl;
         Vertex tempVertex;
         sscanf_s(line.c_str(), "%f %f %f", &tempVertex.x, &tempVertex.y, &tempVertex.z);
         objMesh.Vertices.push_back(tempVertex);
         objMesh.vertexCount++;
-        
+
         std::cout << "Loaded Vertex" << std::endl;
     }
 
-    void LoadVertexTexture(std::string& line, Mesh& objMesh)
+    void LoadVertexTexture(std::string& line, OBJMesh& objMesh)
     {
         std::cout << "Loading Vertex Texture" << std::endl;
         TexCoord tempVertexTexture;
@@ -85,7 +87,7 @@ namespace OBJ_Loader
         std::cout << "Loaded Vertex Texture" << std::endl;
     }
 
-    void LoadVertexNormal(std::string& line, Mesh& objMesh)
+    void LoadVertexNormal(std::string& line, OBJMesh& objMesh)
     {
         std::cout << "Loading Vertex Normal" << std::endl;
         Vector3 tempVertexNormal;
@@ -95,7 +97,7 @@ namespace OBJ_Loader
         std::cout << "Loaded Vertex Normal" << std::endl;
     }
 
-    void LoadFaceOrder(std::string& line, Mesh& objMesh)
+    void LoadFaceOrder(std::string& line, OBJMesh& objMesh)
     {
         std::cout << "Loading Face" << std::endl;
         int tempFaces[9];
