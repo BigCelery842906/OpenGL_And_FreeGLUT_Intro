@@ -260,8 +260,8 @@ void HelloGL::MouseMotion(int x, int y)
 {
 	if (activeInstance) //This has to be an instance otherwise it throws an error for being non-static
 	{
-		glutSetCursor(GLUT_CURSOR_NONE);
 		activeInstance->UpdateCameraFromMouse(x, y); //Pass through directly to this non-static function
+		
 	}
 }
 
@@ -270,8 +270,7 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	
 	std::cout << "Mouse is at: " << screenMiddleWidth - x << ", " << screenMiddleHeight - y << std::endl;
 
-	static int lastX = screenMiddleWidth;
-	static int lastY = screenMiddleHeight;
+	
 
 	int deltaX = lastX - x;
 	int deltaY = lastY - y;
@@ -293,6 +292,8 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 		{
 			std::cout << "Mouse button pressed\n";
 			glutSetCursor(GLUT_CURSOR_NONE);
+			activeInstance->lastX = x;
+			activeInstance->lastY = y;
 			
 		}
 		else if (state == GLUT_UP)

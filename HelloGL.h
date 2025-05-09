@@ -18,6 +18,9 @@ private:
 
     Vector4* _lightPosition;
     Lighting* _lightData;
+
+    int lastX = screenMiddleWidth;
+    int lastY = screenMiddleHeight;
 public:
     
     HelloGL(int argc, char* argv[]);
