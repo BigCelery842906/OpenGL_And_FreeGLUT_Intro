@@ -3,7 +3,7 @@
 #include "Structures.h"
 #include "Texture2D.h"
 
-class OBJObject
+class OBJObject : public SceneObject
 {
 private:
     float localRotation = 0.0f;
@@ -13,11 +13,11 @@ private:
 
     Material* _material;
 
-    OBJMesh* _mesh;
+    Mesh* _mesh;
     Texture2D* _texture;
     
 public:
-    OBJObject(OBJMesh* mesh, Texture2D* texture, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    OBJObject(Mesh* mesh, Texture2D* texture, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
     ~OBJObject();
 
     void DrawObject();

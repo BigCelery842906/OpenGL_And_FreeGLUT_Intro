@@ -50,15 +50,6 @@ struct Mesh
 
 };
 
-struct OBJMesh
-{
-    std::vector<Vertex> Vertices;
-    std::vector<Vector3> Normals;
-    std::vector<TexCoord> TexCoords;
-    std::vector<GLushort> Indices;
-    int vertexCount, normalCount, TexCoordCount, indexCount;
-};
-
 struct Lighting
 {
     Vector4 Ambient, Diffuse, Specular;

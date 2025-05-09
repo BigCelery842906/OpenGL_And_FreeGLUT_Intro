@@ -75,7 +75,7 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"boat.obj");
+	Mesh* ObjMesh = OBJ_Loader::Load((char*)"Fish.obj");
 	
 	Texture2D* CubeTexture = new Texture2D();
 	CubeTexture->Load("Penguins.raw", 512, 512);
@@ -89,12 +89,12 @@ void HelloGL::InitObjects()
 	
 	 for (int i = 0; i < NUMOBJECTS; i++)
 	 {
-	 	objects[i] = new Cube(cubeMesh, CubeTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	 	objects[i] = new Cube(cubeMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	 }
 
 	for (int i = 0; i < 200; i++)
 	{
-		objobject[i] = new OBJObject(ObjMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+		objobject[i] = new OBJObject(ObjMesh, boatTexture, 0, 0, -50, 0, 0, 0);
 	}
 	
 	// for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
@@ -131,6 +131,7 @@ void HelloGL::InitLighting()
 void HelloGL::Display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 
 	//DRAW METHOD HERE
 	 for (int i = 0; i < 2*NUMOBJECTS; i++)

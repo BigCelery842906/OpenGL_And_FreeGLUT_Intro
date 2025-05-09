@@ -2,7 +2,7 @@
 
 
 
-OBJObject::OBJObject(OBJMesh* mesh, Texture2D* texture, float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+OBJObject::OBJObject(Mesh* mesh, Texture2D* texture, float posX, float posY, float posZ, float rotX, float rotY, float rotZ) : SceneObject(mesh, texture)
 {
     _position.x = posX;
     _position.y = posY;
@@ -13,10 +13,8 @@ OBJObject::OBJObject(OBJMesh* mesh, Texture2D* texture, float posX, float posY, 
 
     localRotation = 0.0f;
 
-    _material = new Material();
+    _material = new Material();;
 
-    _mesh = mesh;
-    _texture = texture;
 }
 
 OBJObject::~OBJObject()
@@ -40,9 +38,9 @@ void OBJObject::DrawObject()
     glBindTexture(GL_TEXTURE_2D, _texture->GetID());
     glEnableClientState(GL_TEXTURE_COORD_ARRAY | GL_VERTEX_ARRAY | GL_NORMAL_ARRAY);
 
-    glVertexPointer(3, GL_FLOAT, 0, &(_mesh->Vertices[0]));
-    glNormalPointer(GL_FLOAT, 0, &(_mesh->Normals[0]));
-    glTexCoordPointer(2, GL_FLOAT, 0, &(_mesh->TexCoords[0]));
+    glVertexPointer(3, GL_FLOAT, 0, _mesh->Vertices);
+    glNormalPointer(GL_FLOAT, 0, _mesh->Normals);
+    glTexCoordPointer(2, GL_FLOAT, 0, _mesh->TexCoords);
 
     MaterialDraw();
     glMaterialfv(GL_FRONT, GL_AMBIENT, &(_material->Ambient.x));
@@ -56,7 +54,7 @@ void OBJObject::DrawObject()
     glRotatef(localRotation, _rotation.x, _rotation.y, _rotation.z);
 
     //ERROR THROWN HERE, DONT KNOW WHY 
-    glDrawElements(GL_TRIANGLES, _mesh->indexCount, GL_UNSIGNED_SHORT, _mesh->Indices.data());
+    glDrawElements(GL_TRIANGLES, _mesh->indexCount, GL_UNSIGNED_SHORT, _mesh->Indices);
 
     glPopMatrix();
 
