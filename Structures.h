@@ -47,6 +47,7 @@ struct Mesh
     TexCoord* TexCoords;
     GLushort* Indices;
     int vertexCount, normalCount, TexCoordCount, indexCount;
+
 };
 
 struct OBJMesh

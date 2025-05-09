@@ -8,6 +8,7 @@
 #include <cmath>
 
 #include "ObjLoader.h"
+#include "OBJObject.h"
 
 
 static HelloGL* activeInstance = nullptr;
@@ -74,17 +75,28 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
-	//std::cout << objMesh;
-	Texture2D* texture = new Texture2D();
-	texture->Load("Penguins.raw",512,512);
-	std::cout << "Texture pointer: " << texture << std::endl;
-	std::cout << "Texture ID: " << texture->GetID() << std::endl;
+	OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"boat.obj");
 	
-	for (int i = 0; i < NUMOBJECTS; i++)
+	Texture2D* CubeTexture = new Texture2D();
+	CubeTexture->Load("Penguins.raw", 512, 512);
+	std::cout << "Texture pointer: " << CubeTexture << std::endl;
+	std::cout << "Texture ID: " << CubeTexture->GetID() << std::endl;
+
+	Texture2D* boatTexture = new Texture2D();
+	boatTexture->Load("Boat.raw", 2048, 2048);
+	std::cout << "Texture pointer: " << boatTexture << std::endl;
+	std::cout << "Texture ID: " << boatTexture->GetID() << std::endl;
+	
+	 for (int i = 0; i < NUMOBJECTS; i++)
+	 {
+	 	objects[i] = new Cube(cubeMesh, CubeTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	 }
+
+	for (int i = 0; i < 200; i++)
 	{
-		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+		objobject[i] = new OBJObject(ObjMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	}
+	
 	// for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
 	// {
 	// 	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
@@ -126,6 +138,14 @@ void HelloGL::Display()
 	 	if (objects[i] != nullptr)
 	 		objects[i]->Draw();
 	 }
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (objobject[i] != nullptr)
+		{
+			objobject[i]->Draw();
+		}
+	}
 	//DrawFloorReference();
 
 	Vector3 v = { -1.4f, 0.7, -1.0f};
@@ -177,6 +197,14 @@ void HelloGL::Update()
 	{
 		if (objects[i] != nullptr)
 			objects[i] -> Update();
+	}
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (objobject[i] != nullptr)
+		{
+			objobject[i] -> Update();
+		}
 	}
 	
 	glutPostRedisplay();

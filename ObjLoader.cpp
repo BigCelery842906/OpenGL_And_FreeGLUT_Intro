@@ -1,5 +1,7 @@
 ﻿#include "ObjLoader.h"
 
+#include <string>
+
 //#include "MeshLoader.h"
 
 
@@ -12,6 +14,7 @@ namespace OBJ_Loader
         std::ifstream objInFile;
 
         std::string objInTemp;
+        std::string lineType;
 
         objInFile.open(path);
 
@@ -24,100 +27,89 @@ namespace OBJ_Loader
         //LOAD THINGS
         while (objInFile >> objInTemp)
         {
-            objInTemp = "";
-            objInFile >> objInTemp;
-            // std::cout << objInTemp << std::endl;
-            
-            if (objInTemp == "v")
+            lineType = objInTemp;
+            std::getline(objInFile, objInTemp);
+            //lineType = objInTemp.substr(0, 2);
+
+            if (lineType == "v")
             {
-                //LoadVertices
-                std::cout << "Reading as V" << std::endl;
-                LoadVertices(objInFile, *objMesh);
-                //Pull in 3 inFile
+                //LOAD VERTEX
+                LoadVertex(objInTemp, *objMesh);
             }
-            else if (objInTemp == "vn")
+            else if (lineType == "vt")
             {
-                //Load Vertex Normals
-                LoadVertexNormals(objInFile, *objMesh);
-                //Pull in 3 inFile
+                //LOAD VERTEX 
+                LoadVertexTexture(objInTemp, *objMesh);
             }
-            else if (objInTemp == "vt")
+            else if (lineType == "vn")
             {
-                //Load Vertex Textures(?) (I think thats what that is)
-                LoadVertexTextures(objInFile, *objMesh);
-                //Pull in 3 inFile
+                //LOAD VERTEX NORMAL
+                LoadVertexNormal(objInTemp, *objMesh);
             }
-            else if (objInTemp == "f")
+            else if (lineType == "f")
             {
-                //Load Face Vertex Order
-                LoadFaceOrder(objInFile, *objMesh);
+                //LOAD FACE
+                LoadFaceOrder(objInTemp, *objMesh);
             }
             else
             {
-                //This will have anything else like any 's' or # or just random text, basically anything this isn't designed to hanlde
-                std::cout << "No useful found, moving to next." << std::endl;
+                std::cout << "Nothing Useful on Line" << std::endl;
             }
-            
-            
         }
 
         std::cout << "End of File" << std::endl;
 
+        std::cout << "Loaded " << objMesh->vertexCount << " vertices." << std::endl;
+        std::cout << "Loaded " << objMesh->normalCount << " normals." << std::endl;
+        std::cout << "Loaded " << objMesh->TexCoordCount << " TexCoords." << std::endl;
+        std::cout << "Loaded " << objMesh->indexCount << " indices." << std::endl;
+
 
         objInFile.close();
-        return objMesh;        
+        return objMesh;
     }
 
-    void LoadVertices(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadVertex(std::string& line, OBJMesh& objMesh)
     {
-        
-        objMesh.vertexCount++;
-        //SOMETHING WRONG HERE
-        //objInFile >> objMesh.Vertices[objMesh.vertexCount-1].x;
-        //objInFile >> objMesh.Vertices[objMesh.vertexCount-1].y;
-        //objInFile >> objMesh.Vertices[objMesh.vertexCount-1].z;
-
+        std::cout << "Loading Vertex" << std::endl;
         Vertex tempVertex;
-		objInFile >> tempVertex.x >> tempVertex.y >> tempVertex.z;
-		objMesh.Vertices.push_back(tempVertex);
+        sscanf_s(line.c_str(), "%f %f %f", &tempVertex.x, &tempVertex.y, &tempVertex.z);
+        objMesh.Vertices.push_back(tempVertex);
+        objMesh.vertexCount++;
+
+        std::cout << "Loaded Vertex" << std::endl;
     }
 
-    void LoadVertexNormals(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadVertexTexture(std::string& line, OBJMesh& objMesh)
     {
-        objMesh.normalCount++;
-       /* objInFile >> objMesh.Normals[objMesh.normalCount-1].x;
-        objInFile >> objMesh.Normals[objMesh.normalCount-1].y;
-        objInFile >> objMesh.Normals[objMesh.normalCount-1].z;*/
-
-		Vector3 tempNormal;
-		objInFile >> tempNormal.x >> tempNormal.y >> tempNormal.z;
-		objMesh.Normals.push_back(tempNormal);
-    }
-
-    void LoadVertexTextures(std::ifstream& objInFile, OBJMesh& objMesh)
-    {
+        std::cout << "Loading Vertex Texture" << std::endl;
+        TexCoord tempVertexTexture;
+        sscanf_s(line.c_str(), "%f %f", &tempVertexTexture.u, &tempVertexTexture.v);
+        objMesh.TexCoords.push_back(tempVertexTexture);
         objMesh.TexCoordCount++;
-        //objInFile >> objMesh.TexCoords[objMesh.TexCoordCount-1].u;
-        //objInFile >> objMesh.TexCoords[objMesh.TexCoordCount-1].v;
-
-		TexCoord tempTexCoord;
-		objInFile >> tempTexCoord.u >> tempTexCoord.v;
-		objMesh.TexCoords.push_back(tempTexCoord);
+        std::cout << "Loaded Vertex Texture" << std::endl;
     }
 
-    void LoadFaceOrder(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadVertexNormal(std::string& line, OBJMesh& objMesh)
     {
-        std::string tempLine;
-        tempLine = objInFile.get();
-
-
-        //Might need to & in front of the objMesh thing
-        sscanf_s(tempLine.c_str(), "f %f/%f/%f %f/%f/%f %f/%f/%f", objMesh.Indices[objMesh.indexCount], objMesh.Indices[objMesh.indexCount+1], objMesh.Indices[objMesh.indexCount+2], objMesh.Indices[objMesh.indexCount+3], objMesh.Indices[objMesh.indexCount+4], objMesh.Indices[objMesh.indexCount+5], objMesh.Indices[objMesh.indexCount+6], objMesh.Indices[objMesh.indexCount+7], objMesh.Indices[objMesh.indexCount+8] );
-        objMesh.indexCount += 9;
-        
-        
-        //objInFile >> objMesh.Indices[objMesh.indexCount-1];
+        std::cout << "Loading Vertex Normal" << std::endl;
+        Vector3 tempVertexNormal;
+        sscanf_s(line.c_str(), "%f %f %f", &tempVertexNormal.x, &tempVertexNormal.y, &tempVertexNormal.z);
+        objMesh.Normals.push_back(tempVertexNormal);
+        objMesh.normalCount++;
+        std::cout << "Loaded Vertex Normal" << std::endl;
     }
 
-    
+    void LoadFaceOrder(std::string& line, OBJMesh& objMesh)
+    {
+        std::cout << "Loading Face" << std::endl;
+        int tempFaces[9];
+        sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempFaces[0], &tempFaces[1], &tempFaces[2], &tempFaces[3], &tempFaces[4], &tempFaces[5], &tempFaces[6], &tempFaces[7], &tempFaces[8]);
+        for (int i = 0; i < 9; i++)
+        {
+            objMesh.Indices.push_back(tempFaces[i]-1);
+        }
+        objMesh.indexCount += 9;
+        std::cout << "Loaded Face" << std::endl;
+    }
 };

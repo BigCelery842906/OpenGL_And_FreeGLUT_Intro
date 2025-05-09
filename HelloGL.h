@@ -7,6 +7,7 @@
 #include "GLUTCallbacks.h"
 #include "Structures.h"
 #include "Cube.h"
+#include "OBJObject.h"
 
 class HelloGL
 {
@@ -31,6 +32,7 @@ public:
 
     Camera* camera;
     SceneObject* objects[1000];
+    OBJObject* objobject[200];
     
     void Display();
     void Update();
