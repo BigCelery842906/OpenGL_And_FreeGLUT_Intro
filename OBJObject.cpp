@@ -55,7 +55,8 @@ void OBJObject::DrawObject()
     glTranslatef(_position.x, _position.y, _position.z);
     glRotatef(localRotation, _rotation.x, _rotation.y, _rotation.z);
 
-    glDrawElements(GL_TRIANGLES, _mesh->indexCount, GL_UNSIGNED_SHORT, &(_mesh->Indices));
+    //ERROR THROWN HERE, DONT KNOW WHY 
+    glDrawElements(GL_TRIANGLES, _mesh->indexCount, GL_UNSIGNED_SHORT, _mesh->Indices.data());
 
     glPopMatrix();
 

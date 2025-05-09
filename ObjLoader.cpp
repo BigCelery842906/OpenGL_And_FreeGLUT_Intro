@@ -59,7 +59,10 @@ namespace OBJ_Loader
 
         std::cout << "End of File" << std::endl;
 
-        
+        std::cout << "Loaded " << objMesh->vertexCount << " vertices." << std::endl;
+        std::cout << "Loaded " << objMesh->normalCount << " normals." << std::endl;
+        std::cout << "Loaded " << objMesh->TexCoordCount << " TexCoords." << std::endl;
+        std::cout << "Loaded " << objMesh->indexCount << " indices." << std::endl;
 
 
         objInFile.close();
@@ -104,7 +107,7 @@ namespace OBJ_Loader
         sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempFaces[0], &tempFaces[1], &tempFaces[2], &tempFaces[3], &tempFaces[4], &tempFaces[5], &tempFaces[6], &tempFaces[7], &tempFaces[8]);
         for (int i = 0; i < 9; i++)
         {
-            objMesh.Indices.push_back(tempFaces[i]);
+            objMesh.Indices.push_back(tempFaces[i]-1);
         }
         objMesh.indexCount += 9;
         std::cout << "Loaded Face" << std::endl;

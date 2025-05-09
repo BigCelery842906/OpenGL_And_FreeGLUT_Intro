@@ -6,7 +6,7 @@
 class OBJObject
 {
 private:
-    float localRotation;
+    float localRotation = 0.0f;
 
     Vector3 _position;
     Vector3 _rotation;
