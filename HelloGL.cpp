@@ -74,8 +74,8 @@ void HelloGL::InitObjects()
 
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
-	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	Mesh* ObjMesh = OBJ_Loader::Load((char*)"boat.obj");
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
+	Mesh* ObjMesh = OBJ_Loader::Load((char*)"cube.obj");
 	
 	Texture2D* CubeTexture = new Texture2D();
 	CubeTexture->Load("Cube.raw", 512, 512);
@@ -92,15 +92,15 @@ void HelloGL::InitObjects()
 	 	objects[i] = new Cube(ObjMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	 }
 
-	for (int i = 0; i < 200; i++)
-	{
-		objobject[i] = new OBJObject(ObjMesh, boatTexture, 0, 0, -50, 0, 0, 0);
-	}
-	
-	// for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
+	// for (int i = 0; i < 200; i++)
 	// {
-	// 	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	// 	objobject[i] = new OBJObject(ObjMesh, boatTexture, 0, 0, -50, 0, 0, 0);
 	// }
+	
+	for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
+	{
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	}
 }
 
 void HelloGL::InitLighting()

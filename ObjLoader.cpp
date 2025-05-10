@@ -101,7 +101,7 @@ namespace OBJ_Loader
 
     void LoadVertexNormal(std::string& line)
     {
-       // std::cout << "Loading Vertex Normal" << std::endl;
+        // std::cout << "Loading Vertex Normal" << std::endl;
         Vector3 tempVertexNormal;
         sscanf_s(line.c_str(), "%f %f %f", &tempVertexNormal.x, &tempVertexNormal.y, &tempVertexNormal.z);
         NormalsVector.push_back(tempVertexNormal);
@@ -111,67 +111,83 @@ namespace OBJ_Loader
 
     void LoadFaceOrder(std::string& line)
     {
-       // std::cout << "Loading Face" << std::endl;
+        // std::cout << "Loading Face" << std::endl;
         unsigned int tempFaces[9];
         sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempFaces[0], &tempFaces[1], &tempFaces[2], &tempFaces[3], &tempFaces[4], &tempFaces[5], &tempFaces[6], &tempFaces[7], &tempFaces[8]);
 
         //Vertex, Texture, Normal
-		for (int i = 0; i < 3; i++)
-		{
-			IndicesVector.push_back(tempFaces[i * 3]);
-			texCoordIndicesVector.push_back(tempFaces[(i * 3) + 1]);
-			normalIndicesVector.push_back(tempFaces[(i * 3) + 2]);
-            //std::cout << "Vertex Index: " << tempFaces[i * 3] - 1 << ", TexCoord Index: " << (tempFaces[(i * 3) + 1] - 1) << ", Normal Index: " << tempFaces[(i * 3) + 2] - 1 << std::endl;
-		}
+        for (int i = 0; i < 3; i++)
+        {
+            IndicesVector.push_back(tempFaces[i * 3]);
+            texCoordIndicesVector.push_back(tempFaces[(i * 3) + 1]);
+            normalIndicesVector.push_back(tempFaces[(i * 3) + 2]);
+        }
         indexCount += 3;
         //std::cout << "Loaded Face" << std::endl;
     }
 
-    void ApplyDataToMesh(Mesh& objMesh) 
+    void ApplyDataToMesh(Mesh& objMesh)
     {
+        objMesh.vertexCount = vertexCount;
+        objMesh.normalCount = normalCount;
+        objMesh.TexCoordCount = TexCoordCount;
+        objMesh.indexCount = indexCount;
+        
+        objMesh.Vertices = new Vertex[objMesh.indexCount];
+        objMesh.Normals = new Vector3[objMesh.indexCount];
+        objMesh.TexCoords = new TexCoord[objMesh.indexCount];
+        objMesh.Indices = new GLushort[objMesh.indexCount];
+        
         if (vertexCount > 0)
         {
-            objMesh.vertexCount = vertexCount;
-            objMesh.Vertices = new Vertex[vertexCount];
+            for (int i = 0; i < objMesh.indexCount; i++)
+            {
+                int vIndex  = IndicesVector[i] - 1;
+                int vtIndex = texCoordIndicesVector[i] - 1;
+                int vnIndex = normalIndicesVector[i] - 1;
 
-            for (int i = 0; i < vertexCount; i++)
-            {
-                objMesh.Vertices[i].x = VerticesVector[i].x;
-				objMesh.Vertices[i].y = VerticesVector[i].y;
-				objMesh.Vertices[i].z = VerticesVector[i].z;
+                objMesh.Vertices[i] = VerticesVector[vIndex];
+
+                if (vtIndex >= 0 && vtIndex < TexCoordsVector.size())
+                    objMesh.TexCoords[i] = TexCoordsVector[vtIndex];
+
+                if (vnIndex >= 0 && vnIndex < NormalsVector.size())
+                    objMesh.Normals[i] = NormalsVector[vnIndex];
+
+                objMesh.Indices[i] = IndicesVector[i] - 1;
+
             }
-        }
-        if (normalCount > 0)
-        {
-            objMesh.normalCount = normalCount;
-            objMesh.Normals = new Vector3[normalCount];
-            for (int i = 0; i < normalCount; i++)
-            {
-                objMesh.Normals[i].x = NormalsVector[normalIndicesVector[i]-1].x;
-                objMesh.Normals[i].y = NormalsVector[normalIndicesVector[i]-1].y;
-                objMesh.Normals[i].z = NormalsVector[normalIndicesVector[i]-1].z;
-				std::cout << "Normal: " << objMesh.Normals[i].x << ", " << objMesh.Normals[i].y << ", " << objMesh.Normals[i].z << std::endl;
-            }
-        }
-        if (TexCoordCount > 0)
-        {
-            objMesh.TexCoordCount = texCoordIndicesVector.size();
-            objMesh.TexCoords = new TexCoord[objMesh.TexCoordCount];
-            for (int i = 0; i < objMesh.TexCoordCount; i++)
-            {
-                objMesh.TexCoords[i].u = TexCoordsVector[texCoordIndicesVector[i]-1].u;
-				objMesh.TexCoords[i].v = TexCoordsVector[texCoordIndicesVector[i]-1].v;
-				std::cout << "TexCoord: " << objMesh.TexCoords[i].u << ", " << objMesh.TexCoords[i].v << std::endl;
-            }
-        }
-        if (indexCount > 0)
-        {
-            objMesh.indexCount = indexCount;
-            objMesh.Indices = new GLushort[indexCount];
-            for (int i = 0; i < indexCount; i++)
-            {
-                objMesh.Indices[i] = IndicesVector[i]-1;
-            }
+            //     if (normalCount > 0)
+            //     {
+            //         objMesh.normalCount = normalCount;
+            //         objMesh.Normals = new Vector3[normalCount];
+            //         for (int i = 0; i < normalCount; i++)
+            //         {
+            //             objMesh.Normals[i].x = NormalsVector[normalIndicesVector[i]-1].x;
+            //             objMesh.Normals[i].y = NormalsVector[normalIndicesVector[i]-1].y;
+            //             objMesh.Normals[i].z = NormalsVector[normalIndicesVector[i]-1].z;
+            // std::cout << "Normal: " << objMesh.Normals[i].x << ", " << objMesh.Normals[i].y << ", " << objMesh.Normals[i].z << std::endl;
+            //         }
+            //     }
+            //     if (TexCoordCount > 0)
+            //     {
+            //         objMesh.TexCoordCount = texCoordIndicesVector.size();
+            // objMesh.TexCoords = new TexCoord[objMesh.indexCount];
+            //         for (int i = 0; i < objMesh.TexCoordCount; i++)
+            //         {
+            //             objMesh.TexCoords[i].u = TexCoordsVector[texCoordIndicesVector[i]-1].u;
+            // objMesh.TexCoords[i].v = TexCoordsVector[texCoordIndicesVector[i]-1].v;
+            // std::cout << "TexCoord: " << objMesh.TexCoords[i].u << ", " << objMesh.TexCoords[i].v << std::endl;
+            //         }
+            //     }
+            //     if (indexCount > 0)
+            //     {
+            //         objMesh.indexCount = indexCount;
+            //         objMesh.Indices = new GLushort[indexCount];
+            //         for (int i = 0; i < indexCount; i++)
+            //         {
+            //             objMesh.Indices[i] = IndicesVector[i]-1;
+            //         }
         }
     }
 

@@ -58,7 +58,6 @@ void Cube::DrawIndexedCubeAlt()
 
 	glVertexPointer(3, GL_FLOAT, 0, _mesh->Vertices);
 	glNormalPointer(GL_FLOAT, 0, _mesh->Normals);
-
 	glTexCoordPointer(2,GL_FLOAT,0,_mesh->TexCoords);
 
 	Cube::MaterialDraw();
