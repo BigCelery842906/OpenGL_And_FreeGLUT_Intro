@@ -185,7 +185,7 @@ void HelloGL::Update()
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
 	key = tolower(key); //Converts upper into lower, making sure it will always fire
-	float CameraMovementSpeed = 0.2f;
+	float CameraMovementSpeed = 1.0f;
 
 	switch (key)
 	{
@@ -270,7 +270,7 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	
 	std::cout << "Mouse is at: " << screenMiddleWidth - x << ", " << screenMiddleHeight - y << std::endl;
 
-	
+	//Need to include when mouse is at edge of screens
 
 	int deltaX = lastX - x;
 	int deltaY = lastY - y;
@@ -278,7 +278,8 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	camera->eye.x += deltaX * 0.01f;
 	camera->eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
 	
-	//glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+	//If at edge of screen, reset the pointer but also reset last x and y to stop jittering 
+
 	lastX = x;
 	lastY = y;
 
@@ -306,6 +307,11 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 }
 
 #pragma endregion
+
+void CameraCalculateForward(Vector3 center, Vector3 eye);
+
+
+
 
 void HelloGL::DrawString(const char* text, Vector3* position, Color* color)
 {
