@@ -75,10 +75,10 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	Mesh* ObjMesh = OBJ_Loader::Load((char*)"Fish.obj");
+	Mesh* ObjMesh = OBJ_Loader::Load((char*)"boat.obj");
 	
 	Texture2D* CubeTexture = new Texture2D();
-	CubeTexture->Load("Penguins.raw", 512, 512);
+	CubeTexture->Load("Cube.raw", 512, 512);
 	std::cout << "Texture pointer: " << CubeTexture << std::endl;
 	std::cout << "Texture ID: " << CubeTexture->GetID() << std::endl;
 
@@ -89,7 +89,7 @@ void HelloGL::InitObjects()
 	
 	 for (int i = 0; i < NUMOBJECTS; i++)
 	 {
-	 	objects[i] = new Cube(cubeMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	 	objects[i] = new Cube(ObjMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
 	 }
 
 	for (int i = 0; i < 200; i++)
@@ -111,7 +111,7 @@ void HelloGL::InitLighting()
 	_lightPosition->z = 0.0f;
 	_lightPosition->w = 1.0f;
 
-	_lightData = new Lighting();
+	_lightData = new Lighting(); //ISSUE
 	_lightData->Ambient.x = 0.2f;
 	_lightData->Ambient.y = 0.2f;
 	_lightData->Ambient.z = 0.2f;

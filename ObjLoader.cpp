@@ -12,6 +12,7 @@ namespace OBJ_Loader
     std::vector<TexCoord> TexCoordsVector;
     std::vector<GLushort> IndicesVector;
     int vertexCount, normalCount, TexCoordCount, indexCount;
+    std::vector<int> normalIndicesVector, texCoordIndicesVector;
 
 
     Mesh* Load(char* path)
@@ -59,7 +60,7 @@ namespace OBJ_Loader
             }
             else
             {
-                std::cout << "Nothing Useful on Line" << std::endl;
+                //std::cout << "Nothing Useful on Line" << std::endl;
             }
         }
 
@@ -79,48 +80,51 @@ namespace OBJ_Loader
 
     void LoadVertex(std::string& line)
     {
-        std::cout << "Loading Vertex" << std::endl;
+        //std::cout << "Loading Vertex" << std::endl;
         Vertex tempVertex;
         sscanf_s(line.c_str(), "%f %f %f", &tempVertex.x, &tempVertex.y, &tempVertex.z);
         VerticesVector.push_back(tempVertex);
         vertexCount++;
 
-        std::cout << "Loaded Vertex" << std::endl;
+        //std::cout << "Loaded Vertex" << std::endl;
     }
 
     void LoadVertexTexture(std::string& line)
     {
-        std::cout << "Loading Vertex Texture" << std::endl;
+        //std::cout << "Loading Vertex Texture" << std::endl;
         TexCoord tempVertexTexture;
         sscanf_s(line.c_str(), "%f %f", &tempVertexTexture.u, &tempVertexTexture.v);
         TexCoordsVector.push_back(tempVertexTexture);
-        TexCoordCount++;
-        std::cout << "Loaded Vertex Texture" << std::endl;
+        TexCoordCount += 1;
+        //std::cout << "Loaded Vertex Texture" << std::endl;
     }
 
     void LoadVertexNormal(std::string& line)
     {
-        std::cout << "Loading Vertex Normal" << std::endl;
+       // std::cout << "Loading Vertex Normal" << std::endl;
         Vector3 tempVertexNormal;
         sscanf_s(line.c_str(), "%f %f %f", &tempVertexNormal.x, &tempVertexNormal.y, &tempVertexNormal.z);
         NormalsVector.push_back(tempVertexNormal);
         normalCount++;
-        std::cout << "Loaded Vertex Normal" << std::endl;
+        //std::cout << "Loaded Vertex Normal" << std::endl;
     }
 
     void LoadFaceOrder(std::string& line)
     {
-        std::cout << "Loading Face" << std::endl;
+       // std::cout << "Loading Face" << std::endl;
         unsigned int tempFaces[9];
         sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempFaces[0], &tempFaces[1], &tempFaces[2], &tempFaces[3], &tempFaces[4], &tempFaces[5], &tempFaces[6], &tempFaces[7], &tempFaces[8]);
 
         //Vertex, Texture, Normal
-
-        IndicesVector.push_back(tempFaces[0]);
-        IndicesVector.push_back(tempFaces[3]);
-        IndicesVector.push_back(tempFaces[6]);
+		for (int i = 0; i < 3; i++)
+		{
+			IndicesVector.push_back(tempFaces[i * 3]);
+			texCoordIndicesVector.push_back(tempFaces[(i * 3) + 1]);
+			normalIndicesVector.push_back(tempFaces[(i * 3) + 2]);
+            //std::cout << "Vertex Index: " << tempFaces[i * 3] - 1 << ", TexCoord Index: " << (tempFaces[(i * 3) + 1] - 1) << ", Normal Index: " << tempFaces[(i * 3) + 2] - 1 << std::endl;
+		}
         indexCount += 3;
-        std::cout << "Loaded Face" << std::endl;
+        //std::cout << "Loaded Face" << std::endl;
     }
 
     void ApplyDataToMesh(Mesh& objMesh) 
@@ -143,20 +147,21 @@ namespace OBJ_Loader
             objMesh.Normals = new Vector3[normalCount];
             for (int i = 0; i < normalCount; i++)
             {
-                objMesh.Normals[i].x = NormalsVector[i].x ;
-				objMesh.Normals[i].y = NormalsVector[i].y ;
-				objMesh.Normals[i].z = NormalsVector[i].z ;
+                objMesh.Normals[i].x = NormalsVector[normalIndicesVector[i]-1].x;
+                objMesh.Normals[i].y = NormalsVector[normalIndicesVector[i]-1].y;
+                objMesh.Normals[i].z = NormalsVector[normalIndicesVector[i]-1].z;
+				std::cout << "Normal: " << objMesh.Normals[i].x << ", " << objMesh.Normals[i].y << ", " << objMesh.Normals[i].z << std::endl;
             }
         }
         if (TexCoordCount > 0)
         {
-            objMesh.TexCoordCount = TexCoordCount;
-            objMesh.TexCoords = new TexCoord[TexCoordCount];
-            for (int i = 0; i < TexCoordCount; i++)
+            objMesh.TexCoordCount = texCoordIndicesVector.size();
+            objMesh.TexCoords = new TexCoord[objMesh.TexCoordCount];
+            for (int i = 0; i < objMesh.TexCoordCount; i++)
             {
-                objMesh.TexCoords[i].u = TexCoordsVector[i].u ;
-				objMesh.TexCoords[i].v = TexCoordsVector[i].v ;
-                
+                objMesh.TexCoords[i].u = TexCoordsVector[texCoordIndicesVector[i]-1].u;
+				objMesh.TexCoords[i].v = TexCoordsVector[texCoordIndicesVector[i]-1].v;
+				std::cout << "TexCoord: " << objMesh.TexCoords[i].u << ", " << objMesh.TexCoords[i].v << std::endl;
             }
         }
         if (indexCount > 0)
@@ -166,6 +171,61 @@ namespace OBJ_Loader
             for (int i = 0; i < indexCount; i++)
             {
                 objMesh.Indices[i] = IndicesVector[i]-1;
+            }
+        }
+    }
+
+    void ApplyIndexing(Mesh& objMesh)
+    {
+        if (vertexCount > 0)
+        {
+            objMesh.vertexCount = vertexCount;
+            objMesh.Vertices = new Vertex[vertexCount];
+            
+            for (int i = 0; i < IndicesVector.size(); i++)
+            {
+                //int vertexIndexX = VerticesVector[i];
+                //objMesh.Vertices[i] = VerticesVector[vertexIndexX -1];
+                //int vertexIndexY = VerticesVector[i].y;
+            }
+        }
+
+        if (TexCoordCount > 0)
+        {
+            objMesh.TexCoordCount = TexCoordCount;
+            objMesh.TexCoords = new TexCoord[TexCoordCount];
+            for (int i = 0; i < TexCoordsVector.size(); i++)
+            {
+                int TexVertexIndexU = TexCoordsVector[i].u;
+                objMesh.TexCoords[i].u = TexCoordsVector[TexVertexIndexU-1].u;
+
+                int TexVertexIndexV = TexCoordsVector[i].v;
+                objMesh.TexCoords[i].v = TexCoordsVector[TexVertexIndexV-1].v;
+            
+            }
+        }
+        if (normalCount > 0)
+        {
+            objMesh.normalCount = normalCount;
+            objMesh.Normals = new Vector3[normalCount];
+            for (int i = 0; i < NormalsVector.size(); i++)
+            {
+                int vertexIndexX = NormalsVector[i].x;
+                objMesh.Normals[i].x = NormalsVector[vertexIndexX -1].x;
+                int vertexIndexY = NormalsVector[i].y;
+                objMesh.Normals[i].y = NormalsVector[vertexIndexY-1].y;
+                int vertexIndexZ = NormalsVector[i].z;
+                objMesh.Normals[i].z = NormalsVector[vertexIndexZ-1].z;
+            }
+        }
+
+        if (indexCount > 0)
+        {
+            objMesh.indexCount = indexCount;
+            objMesh.Indices = new GLushort[indexCount];
+            for (int i = 0; i < indexCount; i++)
+            {
+                objMesh.Indices[i] = i;
             }
         }
     }

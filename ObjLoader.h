@@ -14,4 +14,5 @@ namespace OBJ_Loader
     void LoadVertexNormal(std::string& line);
     void LoadFaceOrder(std::string& line);
 	void ApplyDataToMesh(Mesh& objMesh);
+	void ApplyIndexing(Mesh& objMesh);
 };
