@@ -127,48 +127,35 @@ namespace OBJ_Loader
         indexCount += 3;
         //std::cout << "Loaded Face" << std::endl;
     }
-
+    
     void ApplyDataToMesh(Mesh& objMesh)
     {
-        objMesh.vertexCount = vertexCount;
-        objMesh.normalCount = normalCount;
-        objMesh.TexCoordCount = TexCoordCount;
-        objMesh.indexCount = indexCount;
-        
-        objMesh.Vertices = new Vertex[objMesh.indexCount];
-        objMesh.Normals = new Vector3[objMesh.indexCount];
-        objMesh.TexCoords = new TexCoord[objMesh.indexCount];
-        objMesh.Indices = new GLushort[objMesh.indexCount];
-        
-        if (vertexCount > 0)
+        int numVertices = IndicesVector.size();
+        objMesh.vertexCount = numVertices;
+        objMesh.normalCount = numVertices;
+        objMesh.TexCoordCount = numVertices;
+        objMesh.indexCount = numVertices;
+
+        objMesh.Vertices = new Vertex[numVertices];
+        objMesh.Normals = new Vector3[numVertices];
+        objMesh.TexCoords = new TexCoord[numVertices];
+        objMesh.Indices = new GLushort[numVertices];
+
+        for (int i = 0; i < numVertices; ++i)
         {
-            for (int i = 0; i < objMesh.vertexCount; i++) //Vertexes are done perfectly
-            {
-                objMesh.Vertices[i].x = VerticesVector[i].x;
-                objMesh.Vertices[i].y = VerticesVector[i].y;
-                objMesh.Vertices[i].z = VerticesVector[i].z;
-                
-                //     int vIndex  = IndicesVector[i] - 1;
+            // Vertex position
+            int vIdx = IndicesVector[i] - 1;
+            objMesh.Vertices[i] = VerticesVector[vIdx];
+
+            // Texture coordinate
+            int vtIdx = texCoordIndicesVector[i] - 1;
+            objMesh.TexCoords[i] = TexCoordsVector[vtIdx];
+
+            // Normal
+            int vnIdx = normalIndicesVector[i] - 1;
+            objMesh.Normals[i] = NormalsVector[vnIdx];
             
-            }
-        }
-
-        if (TexCoordCount > 0)
-        {
-            objMesh.TexCoordCount = TexCoordCount;
-
-            {
-            }
-        }
-
-        if (indexCount > 0)
-        {
-            objMesh.indexCount = indexCount;
-            objMesh.Indices = new GLushort[indexCount];
-            for (int i = 0; i < indexCount; i++)
-            {
-                objMesh.Indices[i] = IndicesVector[i]-1;
-            }
+            objMesh.Indices[i] = i; //Set the index to be the current iteration, aka the first position is 0, 2nd is 1 etc etc.
         }
     }
 }

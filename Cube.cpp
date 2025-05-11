@@ -37,15 +37,15 @@ void Cube::Update()
 	if (rotationCube >= 360.0f)
 	{
 		rotationCube =0.0f;
-	}
-	if (_position.z < -1)
-	{
-		_position.z += 0.5;
-	}
-	else
-	{
-		_position.z = -100;
 	}*/
+	// if (_position.z < -1)
+	// {
+	// 	_position.z += 0.5;
+	// }
+	// else
+	// {
+	// 	_position.z = -100;
+	// }
 	
 }
 
