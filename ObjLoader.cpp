@@ -95,7 +95,7 @@ namespace OBJ_Loader
         TexCoord tempVertexTexture;
         sscanf_s(line.c_str(), "%f %f", &tempVertexTexture.u, &tempVertexTexture.v);
         TexCoordsVector.push_back(tempVertexTexture);
-        TexCoordCount += 1;
+        TexCoordCount++;
         //std::cout << "Loaded Vertex Texture" << std::endl;
     }
 
@@ -112,15 +112,17 @@ namespace OBJ_Loader
     void LoadFaceOrder(std::string& line)
     {
         // std::cout << "Loading Face" << std::endl;
-        unsigned int tempFaces[9];
-        sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempFaces[0], &tempFaces[1], &tempFaces[2], &tempFaces[3], &tempFaces[4], &tempFaces[5], &tempFaces[6], &tempFaces[7], &tempFaces[8]);
+        unsigned int tempIndicesOrder[3];
+        unsigned int tempTexCoordsOrder[3];
+        unsigned int tempNormalOrder[3];
+        sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempIndicesOrder[0], &tempTexCoordsOrder[0], &tempNormalOrder[0], &tempIndicesOrder[1], &tempTexCoordsOrder[1], &tempNormalOrder[1], &tempIndicesOrder[2], &tempTexCoordsOrder[2], &tempNormalOrder[2]);
 
         //Vertex, Texture, Normal
         for (int i = 0; i < 3; i++)
         {
-            IndicesVector.push_back(tempFaces[i * 3]);
-            texCoordIndicesVector.push_back(tempFaces[(i * 3) + 1]);
-            normalIndicesVector.push_back(tempFaces[(i * 3) + 2]);
+            IndicesVector.push_back(tempIndicesOrder[i]);
+            texCoordIndicesVector.push_back(tempTexCoordsOrder[i]);
+            normalIndicesVector.push_back(tempNormalOrder[i]);
         }
         indexCount += 3;
         //std::cout << "Loaded Face" << std::endl;

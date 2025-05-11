@@ -48,6 +48,10 @@ struct Mesh
     GLushort* Indices;
     int vertexCount, normalCount, TexCoordCount, indexCount;
 
+    Mesh()
+    {
+        vertexCount = normalCount = TexCoordCount = indexCount = 0;
+    }
 };
 
 struct Lighting

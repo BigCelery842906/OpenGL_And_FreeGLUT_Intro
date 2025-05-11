@@ -75,10 +75,10 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	Mesh* ObjMesh = OBJ_Loader::Load((char*)"cube.obj");
+	Mesh* ObjMesh = OBJ_Loader::Load((char*)"boat.obj");
 	
 	Texture2D* CubeTexture = new Texture2D();
-	CubeTexture->Load("Cube.raw", 512, 512);
+	CubeTexture->Load("Penguins.raw", 512, 512);
 	std::cout << "Texture pointer: " << CubeTexture << std::endl;
 	std::cout << "Texture ID: " << CubeTexture->GetID() << std::endl;
 
