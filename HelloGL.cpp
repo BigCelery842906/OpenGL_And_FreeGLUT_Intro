@@ -315,14 +315,15 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 	{
 		if (state == GLUT_DOWN)
 		{
-		}
-	
-		if (state == GLUT_UP)
 			std::cout << "Scroll button pressed\n";
 			glutSetCursor(GLUT_CURSOR_NONE);
 			activeInstance->lastX = x;
 			activeInstance->lastY = y;
 			activeInstance->middleMouse = true;
+		}
+	
+		if (state == GLUT_UP)
+			
 		{
 			std::cout << "Scroll Middle button released\n";
 			glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
