@@ -74,9 +74,10 @@ void HelloGL::InitObjects()
 
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
 	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
+	// OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
 	//std::cout << objMesh;
 	Texture2D* texture = new Texture2D();
+	
 	texture->Load("Penguins.raw",512,512);
 	std::cout << "Texture pointer: " << texture << std::endl;
 	std::cout << "Texture ID: " << texture->GetID() << std::endl;
@@ -128,7 +129,7 @@ void HelloGL::Display()
 	 }
 	//DrawFloorReference();
 
-	Vector3 v = { -1.4f, 0.7, -1.0f};
+	Vector3 v = { -1.4f, 0.7f, -1.0f};
 	Color c = { 0.0f,1.0f,0.0f};
 
 	DrawString("The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.", &v, &c);
@@ -280,6 +281,11 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	
 	//If at edge of screen, reset the pointer but also reset last x and y to stop jittering 
 
+	if (middleMouse)
+	{
+		camera->center.x += deltaX * 0.01f;
+		camera->center.y -= deltaY * 0.01f;
+	}
 	lastX = x;
 	lastY = y;
 
@@ -287,7 +293,7 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 
 void HelloGL::MouseButton(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON)
+	if ((button == GLUT_LEFT_BUTTON) | (button == GLUT_RIGHT_BUTTON))
 	{
 		if (state == GLUT_DOWN)
 		{
@@ -295,7 +301,7 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 			glutSetCursor(GLUT_CURSOR_NONE);
 			activeInstance->lastX = x;
 			activeInstance->lastY = y;
-			
+			//activeInstance->middleMouse = false;
 		}
 		else if (state == GLUT_UP)
 		{
@@ -304,12 +310,38 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 		}
 	}
+
+	if (button == GLUT_MIDDLE_BUTTON)
+	{
+		if (state == GLUT_DOWN)
+		{
+		}
+	
+		if (state == GLUT_UP)
+			std::cout << "Scroll button pressed\n";
+			glutSetCursor(GLUT_CURSOR_NONE);
+			activeInstance->lastX = x;
+			activeInstance->lastY = y;
+			activeInstance->middleMouse = true;
+		{
+			std::cout << "Scroll Middle button released\n";
+			glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			activeInstance->middleMouse = false;
+		}
+	}
 }
 
 #pragma endregion
 
-void CameraCalculateForward(Vector3 center, Vector3 eye);
-
+Vector3 CameraCalculateForward(Vector3 center, Vector3 eye)
+{
+	Vector3 forward;
+	forward.x = center.x - eye.x;
+	forward.y = center.y - eye.y;
+	forward.z = center.z - eye.z;
+	return forward;
+}
 
 
 
