@@ -8,8 +8,10 @@
 
 #define REFRESHRATE 16 //This is in ms not FPS
 #define NUMOBJECTS 200 //Number of Cubes to Spawn
-#define SCREEN_WIDTH 700 //Width of Window
-#define SCREEN_HEIGHT 700 // Height of Window
+#define SCREEN_WIDTH 800 //Width of Window
+#define SCREEN_HEIGHT 800 // Height of Window
+#define PI 3.14159265
+#define RADIANS (PI/180.0)
 
 struct Vector3
 {

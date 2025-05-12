@@ -149,7 +149,7 @@ void HelloGL::Display()
 	}
 	//DrawFloorReference();
 
-	Vector3 v = { -1.4f, 0.7, -1.0f};
+	Vector3 v = { -1.4f, 0.7f, -1.0f};
 	Color c = { 0.0f,1.0f,0.0f};
 
 	DrawString("The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.", &v, &c);
@@ -214,7 +214,7 @@ void HelloGL::Update()
 void HelloGL::Keyboard(unsigned char key, int x, int y)
 {
 	key = tolower(key); //Converts upper into lower, making sure it will always fire
-	float CameraMovementSpeed = 0.2f;
+	float CameraMovementSpeed = 1.0f;
 
 	switch (key)
 	{
@@ -248,7 +248,7 @@ void HelloGL::Keyboard(unsigned char key, int x, int y)
 			camera->eye.y -= CameraMovementSpeed;
 			break;
 		}
-	case 15: //SHIFT???
+	case 'c': //SHIFT /CTRL ???
 		{
 			camera->center.y -= CameraMovementSpeed;
 			camera->eye.y -= CameraMovementSpeed;
@@ -299,7 +299,7 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	
 	std::cout << "Mouse is at: " << screenMiddleWidth - x << ", " << screenMiddleHeight - y << std::endl;
 
-	
+	//Need to include when mouse is at edge of screens
 
 	int deltaX = lastX - x;
 	int deltaY = lastY - y;
@@ -307,7 +307,13 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 	camera->eye.x += deltaX * 0.01f;
 	camera->eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
 	
-	//glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+	//If at edge of screen, reset the pointer but also reset last x and y to stop jittering 
+
+	if (middleMouse)
+	{
+		camera->center.x += deltaX * 0.01f;
+		camera->center.y -= deltaY * 0.01f;
+	}
 	lastX = x;
 	lastY = y;
 
@@ -315,7 +321,7 @@ void HelloGL::UpdateCameraFromMouse(int x, int y)
 
 void HelloGL::MouseButton(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON)
+	if ((button == GLUT_LEFT_BUTTON) || (button == GLUT_RIGHT_BUTTON))
 	{
 		if (state == GLUT_DOWN)
 		{
@@ -323,7 +329,7 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 			glutSetCursor(GLUT_CURSOR_NONE);
 			activeInstance->lastX = x;
 			activeInstance->lastY = y;
-			
+			//activeInstance->middleMouse = false;
 		}
 		else if (state == GLUT_UP)
 		{
@@ -332,9 +338,41 @@ void HelloGL::MouseButton(int button, int state, int x, int y)
 			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
 		}
 	}
+
+	if (button == GLUT_MIDDLE_BUTTON)
+	{
+		if (state == GLUT_DOWN)
+		{
+			std::cout << "Scroll button pressed\n";
+			glutSetCursor(GLUT_CURSOR_NONE);
+			activeInstance->lastX = x;
+			activeInstance->lastY = y;
+			activeInstance->middleMouse = true;
+		}
+	
+		if (state == GLUT_UP)
+			
+		{
+			std::cout << "Scroll Middle button released\n";
+			glutWarpPointer(glutGet(GLUT_WINDOW_WIDTH) / 2, glutGet(GLUT_WINDOW_HEIGHT) / 2);
+			glutSetCursor(GLUT_CURSOR_LEFT_ARROW);
+			activeInstance->middleMouse = false;
+		}
+	}
 }
 
 #pragma endregion
+
+Vector3 CameraCalculateForward(Vector3 center, Vector3 eye)
+{
+	Vector3 forward;
+	forward.x = center.x - eye.x;
+	forward.y = center.y - eye.y;
+	forward.z = center.z - eye.z;
+	return forward;
+}
+
+
 
 void HelloGL::DrawString(const char* text, Vector3* position, Color* color)
 {

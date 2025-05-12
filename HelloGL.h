@@ -22,6 +22,8 @@ private:
 
     int lastX = screenMiddleWidth;
     int lastY = screenMiddleHeight;
+
+    bool middleMouse = false;
 public:
     
     HelloGL(int argc, char* argv[]);
