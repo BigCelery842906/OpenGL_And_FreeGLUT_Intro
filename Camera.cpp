@@ -129,6 +129,7 @@ void Camera::UpdateCameraFromMouse(int x, int y)
     rotation = deltaX;
     int deltaY = lastY - y;
 
+    rotation *= -1;
     if (!middleMouse)
     {
         camera.eye = CalculateMagnitudeComponents(camera.eye, rotation);
