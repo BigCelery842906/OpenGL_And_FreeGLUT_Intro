@@ -220,7 +220,7 @@ void HelloGL::Keyboard(unsigned char key, int x, int y)
 			camera->eye.y -= CameraMovementSpeed;
 			break;
 		}
-	case 15: //SHIFT???
+	case 'c': //SHIFT /CTRL ???
 		{
 			camera->center.y -= CameraMovementSpeed;
 			camera->eye.y -= CameraMovementSpeed;
