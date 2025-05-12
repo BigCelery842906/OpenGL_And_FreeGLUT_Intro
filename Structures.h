@@ -23,7 +23,7 @@ struct Vector4
     float x,y,z,w;
 };
 
-struct Camera
+struct CameraStruct
 {
     Vector3 eye,center,up;
 };

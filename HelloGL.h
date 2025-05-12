@@ -12,17 +12,12 @@ class HelloGL
 {
 
 private:
-    float rotation;
-    int screenMiddleWidth = SCREEN_WIDTH/2;
-    int screenMiddleHeight = SCREEN_HEIGHT/2;
+    
 
     Vector4* _lightPosition;
     Lighting* _lightData;
 
-    int lastX = screenMiddleWidth;
-    int lastY = screenMiddleHeight;
-
-    bool middleMouse = false;
+    
 public:
     
     HelloGL(int argc, char* argv[]);
