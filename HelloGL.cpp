@@ -6,7 +6,6 @@
 #include <vector>
 #include <Windows.h>
 #include <cmath>
-
 #include "Camera.h"
 #include "ObjLoader.h"
 #include "OBJObject.h"
@@ -204,4 +203,6 @@ void HelloGL::DrawString(const char* text, Vector3* position, Color* color)
 	glRasterPos2f(0.0f,0.0f);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 }
+
+
 

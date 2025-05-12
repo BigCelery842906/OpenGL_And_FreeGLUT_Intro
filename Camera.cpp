@@ -126,15 +126,18 @@ void Camera::UpdateCameraFromMouse(int x, int y)
     //Need to include when mouse is at edge of screens
 
     int deltaX = lastX - x;
+    rotation = deltaX;
     int deltaY = lastY - y;
-	
-    camera.eye.x += deltaX * 0.01f;
-    camera.eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
-	
-    //If at edge of screen, reset the pointer but also reset last x and y to stop jittering 
 
+    if (!middleMouse)
+    {
+        camera.eye = CalculateMagnitudeComponents(camera.eye, rotation);
+    }
+    //If at edge of screen, reset the pointer but also reset last x and y to stop jittering 
+    camera.eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
     if (middleMouse)
     {
+        camera.eye.x += deltaX * 0.01f;
         camera.center.x += deltaX * 0.01f;
         camera.center.y -= deltaY * 0.01f;
     }
@@ -184,9 +187,32 @@ void Camera::MouseButton(int button, int state, int x, int y)
     }
 }
 
+Vector3 Camera::CalculateMagnitudeComponents(Vector3 input, float &angle)
+{
+    if (angle > 360)
+    {
+        angle -= 360;
+    }
+    if (angle < 0)
+    {
+        angle += 360;
+    }
+    
+    float radianAngle = angle * RADIANS;
+    Vector3 output;
+    output.x = input.x * cos(radianAngle) - input.z * sin(radianAngle);
+    output.z = input.x * sin(radianAngle) + input.z * cos(radianAngle);
+
+    
+
+    std::cout << "Magnitude: " << output.x << ", " << output.z << std::endl;
+    //angle = 0.0f;
+    return output;
+}
+
 #pragma endregion
 
-Vector3 CameraCalculateForward(Vector3 center, Vector3 eye)
+Vector3 Camera::CameraCalculateForward(Vector3 center, Vector3 eye)
 {
     Vector3 forward;
     forward.x = center.x - eye.x;
@@ -194,3 +220,4 @@ Vector3 CameraCalculateForward(Vector3 center, Vector3 eye)
     forward.z = center.z - eye.z;
     return forward;
 }
+
