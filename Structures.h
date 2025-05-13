@@ -16,6 +16,19 @@
 struct Vector3
 {
     float x,y,z;
+
+    Vector3()
+    {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+    }
+    Vector3(float Newx, float Newy, float Newz)
+    {
+        x = Newx;
+        y = Newy;
+        z = Newz;
+    }
 };
 
 struct Vector4

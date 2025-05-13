@@ -24,4 +24,5 @@ public:
     void MouseButton(int button, int state, int x, int y);
     Vector3 CalculateMagnitudeComponents(Vector3 input, float& angle);
     Vector3 CameraCalculateForward(Vector3 center, Vector3 eye);
+    Vector3 CalculateNewLookAt();
 };

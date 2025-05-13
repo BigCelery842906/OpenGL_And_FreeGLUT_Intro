@@ -132,8 +132,11 @@ void Camera::UpdateCameraFromMouse(int x, int y)
     rotation *= -1;
     if (!middleMouse)
     {
-        camera.eye = CalculateMagnitudeComponents(camera.eye, rotation);
+        Vector3 newLookAt = CalculateNewLookAt();
+        camera.center.x = camera.eye.x + newLookAt.x;
+        camera.center.z = camera.eye.z + newLookAt.z;
     }
+
     //If at edge of screen, reset the pointer but also reset last x and y to stop jittering 
     camera.eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
     if (middleMouse)
@@ -189,26 +192,14 @@ void Camera::MouseButton(int button, int state, int x, int y)
 }
 
 Vector3 Camera::CalculateMagnitudeComponents(Vector3 input, float &angle)
-{
-    if (angle > 360)
-    {
-        angle -= 360;
-    }
-    if (angle < 0)
-    {
-        angle += 360;
-    }
-    
+{    
     float radianAngle = angle * RADIANS;
+    
     Vector3 output;
     output.x = input.x * cos(radianAngle) - input.z * sin(radianAngle);
     output.z = input.x * sin(radianAngle) + input.z * cos(radianAngle);
-    output.y = input.y;
-
+    output.y = input.y; //To stop Y-Axis Lock
     
-
-    std::cout << "Magnitude: " << output.x << ", " << output.z << std::endl;
-    //angle = 0.0f;
     return output;
 }
 
@@ -223,3 +214,9 @@ Vector3 Camera::CameraCalculateForward(Vector3 center, Vector3 eye)
     return forward;
 }
 
+Vector3 Camera::CalculateNewLookAt()
+{
+    Vector3 forward = CameraCalculateForward(camera.center, camera.eye);
+    return CalculateMagnitudeComponents(forward, rotation);
+    
+}
