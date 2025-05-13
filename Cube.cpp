@@ -33,19 +33,19 @@ void Cube::Draw()
 
 void Cube::Update()
 {
-	rotationCube += 0.5f;
+	/*rotationCube += 0.5f;
 	if (rotationCube >= 360.0f)
 	{
 		rotationCube =0.0f;
-	}
-	if (_position.z < -1)
-	{
-		_position.z += 0.5;
-	}
-	else
-	{
-		_position.z = -100;
-	}
+	}*/
+	// if (_position.z < -1)
+	// {
+	// 	_position.z += 0.5;
+	// }
+	// else
+	// {
+	// 	_position.z = -100;
+	// }
 	
 }
 

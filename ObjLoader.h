@@ -6,9 +6,13 @@
 
 namespace OBJ_Loader
 {
-    OBJMesh* Load(char* path);
-    void LoadVertices(std::ifstream& objInFile, OBJMesh& objMesh);
-    void LoadVertexNormals(std::ifstream& objInFile, OBJMesh& objMesh);
-    void LoadVertexTextures(std::ifstream& objInFile, OBJMesh& objMesh);
-    void LoadFaceOrder(std::ifstream& objInFile, OBJMesh& objMesh);
+
+    Mesh* Load(char* path);
+
+    void LoadVertex(std::string& line);
+    void LoadVertexTexture(std::string& line);
+    void LoadVertexNormal(std::string& line);
+    void LoadFaceOrder(std::string& line);
+	void ApplyDataToMesh(Mesh& objMesh);
+	void ApplyIndexing(Mesh& objMesh);
 };

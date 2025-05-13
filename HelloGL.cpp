@@ -5,11 +5,13 @@
 #include <iostream>
 #include <vector>
 #include <Windows.h>
-
+#include <cmath>
+#include "Camera.h"
 #include "ObjLoader.h"
+#include "OBJObject.h"
 
 
-static HelloGL* activeInstance = nullptr;
+
 
 #pragma region HelloGL_Initialisation
 HelloGL::HelloGL(int argc, char* argv[])
@@ -23,18 +25,20 @@ HelloGL::HelloGL(int argc, char* argv[])
 
 void HelloGL::InitGL(int argc, char* argv[])
 {
-	GLUTCallbacks::Init(this);
+	camera = new Camera();
+	
+	GLUTCallbacks::Init(this, camera);
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE |  GLUT_DEPTH);
 	
 	glutInitWindowPosition(1920 - SCREEN_WIDTH, 1080 - SCREEN_HEIGHT);
 
-	screenMiddleWidth = SCREEN_WIDTH/2;
-	screenMiddleHeight = SCREEN_HEIGHT/2;
+	
 	glutInitWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	glutCreateWindow("Basically like that one game");
 	
-	glutPassiveMotionFunc(HelloGL::MouseMotion);
+	glutMotionFunc(GLUTCallbacks::MouseMotion);
+	glutMouseFunc(GLUTCallbacks::MouseButton);
 	glutKeyboardFunc(GLUTCallbacks::Keyboard);
 	glutDisplayFunc(GLUTCallbacks::Display);
 	glutTimerFunc(REFRESHRATE, GLUTCallbacks::Timer, REFRESHRATE);
@@ -52,7 +56,7 @@ void HelloGL::InitGL(int argc, char* argv[])
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	activeInstance = this;
+	
 
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
@@ -61,33 +65,34 @@ void HelloGL::InitGL(int argc, char* argv[])
 
 void HelloGL::InitObjects()
 {
-	rotation = 0.0f;
-
-	camera = new Camera();
-
-	camera->eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
-	//camera-> eye.x = 0.0f; camera->eye.y = 0.0f; camera->eye.z = 1.0f;
-	camera->center.x = 0.0f; camera->center.y = 0.0f; camera->center.z = 0.0f;
-	camera->up.x = 0.0f; camera->up.y = 1.0f; camera->up.z = 0.0f;
-
-
 	Mesh* cubeMesh = MeshLoader::Load((char*)"cube.txt", false);
-	//Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
-	OBJMesh* ObjMesh = OBJ_Loader::Load((char*)"sungerbob.obj");
-	//std::cout << objMesh;
-	Texture2D* texture = new Texture2D();
-	texture->Load("Penguins.raw",512,512);
-	std::cout << "Texture pointer: " << texture << std::endl;
-	std::cout << "Texture ID: " << texture->GetID() << std::endl;
+	Mesh* pyramidMesh = MeshLoader::Load((char*)"pyramid.txt", true);
+	Mesh* ObjMesh = OBJ_Loader::Load((char*)"boat.obj");
 	
-	for (int i = 0; i < NUMOBJECTS; i++)
-	{
-		objects[i] = new Cube(cubeMesh, texture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
-	}
-	// for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
+	Texture2D* CubeTexture = new Texture2D();
+	CubeTexture->Load("Penguins.raw", 512, 512);
+	std::cout << "Texture pointer: " << CubeTexture << std::endl;
+	std::cout << "Texture ID: " << CubeTexture->GetID() << std::endl;
+
+	Texture2D* boatTexture = new Texture2D();
+	boatTexture->Load("Boat.raw", 2048, 2048);
+	std::cout << "Texture pointer: " << boatTexture << std::endl;
+	std::cout << "Texture ID: " << boatTexture->GetID() << std::endl;
+	
+	 for (int i = 0; i < NUMOBJECTS; i++)
+	 {
+	 	objects[i] = new Cube(ObjMesh, boatTexture, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	 }
+
+	// for (int i = 0; i < 200; i++)
 	// {
-	// 	objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	// 	objobject[i] = new OBJObject(ObjMesh, boatTexture, 0, 0, -50, 0, 0, 0);
 	// }
+	
+	for (int i = NUMOBJECTS; i < 2*NUMOBJECTS; i++)
+	{
+		objects[i] = new Pyramid(pyramidMesh, ((rand() % 400) /10.0f) - 20.0f, ((rand() % 200) / 10.0f) - 10.0f, -(rand() % 1000) / 10.0f, (rand() % 360), (rand() % 360), rand() % 360);
+	}
 }
 
 void HelloGL::InitLighting()
@@ -118,6 +123,7 @@ void HelloGL::InitLighting()
 void HelloGL::Display() 
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(1.0f, 1.0f, 0.0f, 1.0f);
 
 	//DRAW METHOD HERE
 	 for (int i = 0; i < 2*NUMOBJECTS; i++)
@@ -125,9 +131,17 @@ void HelloGL::Display()
 	 	if (objects[i] != nullptr)
 	 		objects[i]->Draw();
 	 }
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (objobject[i] != nullptr)
+		{
+			objobject[i]->Draw();
+		}
+	}
 	//DrawFloorReference();
 
-	Vector3 v = { -1.4f, 0.7, -1.0f};
+	Vector3 v = { -1.4f, 0.7f, -1.0f};
 	Color c = { 0.0f,1.0f,0.0f};
 
 	DrawString("The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Line up at the start. The running speed starts slowly, but gets faster each minute after you hear this signal. [beep] A single lap should be completed each time you hear this sound. [ding] Remember to run in a straight line, and run as long as possible. The second time you fail to complete a lap before the sound, your test is over. The test will begin on the word start. On your mark, get ready, start.", &v, &c);
@@ -158,87 +172,30 @@ HelloGL::~HelloGL(void)
 void HelloGL::Update()
 {
 	glLoadIdentity();
-	gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z, camera->center.x, camera->center.y, camera->center.z, camera->up.x, camera->up.y, camera->up.z);
-
+	
 	glLightfv(GL_LIGHT0, GL_AMBIENT, &(_lightData->Ambient.x));
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, &(_lightData->Diffuse.x));
 	glLightfv(GL_LIGHT0, GL_SPECULAR, &(_lightData->Specular.x));
 	glLightfv(GL_LIGHT0, GL_POSITION, &(_lightPosition->x));
 	
 	// Sleep(5);
-	rotation += 0.5f;
-	if (rotation >= 360.0f)
-	{
-		rotation =0.0f;
-	}
-
+	
 	for (int i = 0; i < 2*NUMOBJECTS; i++)
 	{
 		if (objects[i] != nullptr)
 			objects[i] -> Update();
 	}
+
+	for (int i = 0; i < 200; i++)
+	{
+		if (objobject[i] != nullptr)
+		{
+			objobject[i] -> Update();
+		}
+	}
 	
 	glutPostRedisplay();
 }
-
-void HelloGL::Keyboard(unsigned char key, int x, int y)
-{
-	key = tolower(key); //Converts upper into lower, making sure it will always fire
-	
-	if (key == 'w')
-	{
-		camera->center.x -= 0.1f;
-	}
-	else if (key == 's')
-	{
-		camera->center.x += 0.1f;
-	}
-	else if (key == 'a')
-	{
-		camera->center.z += 0.1f;
-	}
-	else if (key == 'd')
-	{
-		camera->center.z -= 0.1f;
-	}
-	else if (key == 'q')
-	{
-		camera->center.y -= 0.1f;
-	}
-	else if (key == 'e')
-	{
-		camera->center.y += 0.1f;
-	}
-}
-
-#pragma region MouseCameraMovement
-void HelloGL::MouseMotion(int x, int y)
-{
-	if (activeInstance) //This has to be an instance otherwise it throws an error for being non-static
-	{
-		activeInstance->UpdateCameraFromMouse(x, y); //Pass through directly to this non-static function
-	}
-}
-
-void HelloGL::UpdateCameraFromMouse(int x, int y)
-{
-	
-	std::cout << "Mouse is at: " << screenMiddleWidth - x << ", " << screenMiddleHeight - y << std::endl;
-
-	static int lastX = screenMiddleWidth;
-	static int lastY = screenMiddleHeight;
-
-	int deltaX = lastX - x;
-	int deltaY = lastY - y;
-	
-	camera->eye.x += deltaX * 0.01f;
-	camera->eye.y -= deltaY * 0.01f; //this is negative so it inverts and up goes up and not down.
-
-	lastX = x;
-	lastY = y;
-}
-
-#pragma endregion
 
 void HelloGL::DrawString(const char* text, Vector3* position, Color* color)
 {
@@ -246,4 +203,6 @@ void HelloGL::DrawString(const char* text, Vector3* position, Color* color)
 	glRasterPos2f(0.0f,0.0f);
 	glutBitmapString(GLUT_BITMAP_TIMES_ROMAN_24, (unsigned char*)text);
 }
+
+
 

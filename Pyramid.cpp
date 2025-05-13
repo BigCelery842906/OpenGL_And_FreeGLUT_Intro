@@ -24,7 +24,7 @@ void Pyramid::Update()
 
 void Pyramid::Draw()
 {
-    if (_mesh->Vertices != nullptr && _mesh->Normals != nullptr && _mesh->Indices != nullptr)
+    if (_mesh != nullptr)
     {
         DrawPyramid();
     }

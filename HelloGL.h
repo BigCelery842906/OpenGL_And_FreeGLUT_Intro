@@ -7,17 +7,18 @@
 #include "GLUTCallbacks.h"
 #include "Structures.h"
 #include "Cube.h"
+#include "OBJObject.h"
 
 class HelloGL
 {
 
 private:
-    float rotation;
-    int screenMiddleWidth;
-    int screenMiddleHeight;
+    
 
     Vector4* _lightPosition;
     Lighting* _lightData;
+
+    
 public:
     
     HelloGL(int argc, char* argv[]);
@@ -28,6 +29,7 @@ public:
 
     Camera* camera;
     SceneObject* objects[1000];
+    OBJObject* objobject[200];
     
     void Display();
     void Update();
@@ -35,6 +37,7 @@ public:
     
     void static MouseMotion(int x, int y);
     void UpdateCameraFromMouse(int x, int y);
+    void static MouseButton(int button, int state, int x, int y);
 
     void DrawString(const char* text, Vector3* position, Color* color);
     

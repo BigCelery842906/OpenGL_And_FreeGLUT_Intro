@@ -1,17 +1,27 @@
 ﻿#include "ObjLoader.h"
 
+#include <string>
+
 //#include "MeshLoader.h"
 
 
 namespace OBJ_Loader
 {
+    std::vector<Vertex> VerticesVector;
+    std::vector<Vector3> NormalsVector;
+    std::vector<TexCoord> TexCoordsVector;
+    std::vector<GLushort> IndicesVector;
+    int vertexCount, normalCount, TexCoordCount, indexCount;
+    std::vector<int> normalIndicesVector, texCoordIndicesVector;
 
-    OBJMesh* Load(char* path)
+
+    Mesh* Load(char* path)
     {
-        OBJMesh* objMesh = new OBJMesh();
+        Mesh* objMesh = new Mesh();
         std::ifstream objInFile;
 
         std::string objInTemp;
+        std::string lineType;
 
         objInFile.open(path);
 
@@ -24,100 +34,128 @@ namespace OBJ_Loader
         //LOAD THINGS
         while (objInFile >> objInTemp)
         {
-            objInTemp = "";
-            objInFile >> objInTemp;
-            // std::cout << objInTemp << std::endl;
-            
-            if (objInTemp == "v")
+            lineType = objInTemp;
+            std::getline(objInFile, objInTemp);
+            //lineType = objInTemp.substr(0, 2);
+
+            if (lineType == "v")
             {
-                //LoadVertices
-                std::cout << "Reading as V" << std::endl;
-                LoadVertices(objInFile, *objMesh);
-                //Pull in 3 inFile
+                //LOAD VERTEX
+                LoadVertex(objInTemp);
             }
-            else if (objInTemp == "vn")
+            else if (lineType == "vt")
             {
-                //Load Vertex Normals
-                LoadVertexNormals(objInFile, *objMesh);
-                //Pull in 3 inFile
+                //LOAD VERTEX TEXTURE
+                LoadVertexTexture(objInTemp);
             }
-            else if (objInTemp == "vt")
+            else if (lineType == "vn")
             {
-                //Load Vertex Textures(?) (I think thats what that is)
-                LoadVertexTextures(objInFile, *objMesh);
-                //Pull in 3 inFile
+                //LOAD VERTEX 
+                LoadVertexNormal(objInTemp);
             }
-            else if (objInTemp == "f")
+            else if (lineType == "f")
             {
-                //Load Face Vertex Order
-                LoadFaceOrder(objInFile, *objMesh);
+                //LOAD FACE
+                LoadFaceOrder(objInTemp);
             }
             else
             {
-                //This will have anything else like any 's' or # or just random text, basically anything this isn't designed to hanlde
-                std::cout << "No useful found, moving to next." << std::endl;
+                //std::cout << "Nothing Useful on Line" << std::endl;
             }
-            
-            
         }
 
         std::cout << "End of File" << std::endl;
 
+        ApplyDataToMesh(*objMesh);
+
+        std::cout << "Loaded " << objMesh->vertexCount << " vertices." << std::endl;
+        std::cout << "Loaded " << objMesh->normalCount << " normals." << std::endl;
+        std::cout << "Loaded " << objMesh->TexCoordCount << " TexCoords." << std::endl;
+        std::cout << "Loaded " << objMesh->indexCount << " indices." << std::endl;
+
 
         objInFile.close();
-        return objMesh;        
+        return objMesh;
     }
 
-    void LoadVertices(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadVertex(std::string& line)
     {
-        
-        objMesh.vertexCount++;
-        //SOMETHING WRONG HERE
-        //objInFile >> objMesh.Vertices[objMesh.vertexCount-1].x;
-        //objInFile >> objMesh.Vertices[objMesh.vertexCount-1].y;
-        //objInFile >> objMesh.Vertices[objMesh.vertexCount-1].z;
-
+        //std::cout << "Loading Vertex" << std::endl;
         Vertex tempVertex;
-		objInFile >> tempVertex.x >> tempVertex.y >> tempVertex.z;
-		objMesh.Vertices.push_back(tempVertex);
+        sscanf_s(line.c_str(), "%f %f %f", &tempVertex.x, &tempVertex.y, &tempVertex.z);
+        VerticesVector.push_back(tempVertex);
+        vertexCount++;
+
+        //std::cout << "Loaded Vertex" << std::endl;
     }
 
-    void LoadVertexNormals(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadVertexTexture(std::string& line)
     {
-        objMesh.normalCount++;
-       /* objInFile >> objMesh.Normals[objMesh.normalCount-1].x;
-        objInFile >> objMesh.Normals[objMesh.normalCount-1].y;
-        objInFile >> objMesh.Normals[objMesh.normalCount-1].z;*/
-
-		Vector3 tempNormal;
-		objInFile >> tempNormal.x >> tempNormal.y >> tempNormal.z;
-		objMesh.Normals.push_back(tempNormal);
+        //std::cout << "Loading Vertex Texture" << std::endl;
+        TexCoord tempVertexTexture;
+        sscanf_s(line.c_str(), "%f %f", &tempVertexTexture.u, &tempVertexTexture.v);
+        TexCoordsVector.push_back(tempVertexTexture);
+        TexCoordCount++;
+        //std::cout << "Loaded Vertex Texture" << std::endl;
     }
 
-    void LoadVertexTextures(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadVertexNormal(std::string& line)
     {
-        objMesh.TexCoordCount++;
-        //objInFile >> objMesh.TexCoords[objMesh.TexCoordCount-1].u;
-        //objInFile >> objMesh.TexCoords[objMesh.TexCoordCount-1].v;
-
-		TexCoord tempTexCoord;
-		objInFile >> tempTexCoord.u >> tempTexCoord.v;
-		objMesh.TexCoords.push_back(tempTexCoord);
+        // std::cout << "Loading Vertex Normal" << std::endl;
+        Vector3 tempVertexNormal;
+        sscanf_s(line.c_str(), "%f %f %f", &tempVertexNormal.x, &tempVertexNormal.y, &tempVertexNormal.z);
+        NormalsVector.push_back(tempVertexNormal);
+        normalCount++;
+        //std::cout << "Loaded Vertex Normal" << std::endl;
     }
 
-    void LoadFaceOrder(std::ifstream& objInFile, OBJMesh& objMesh)
+    void LoadFaceOrder(std::string& line)
     {
-        std::string tempLine;
-        tempLine = objInFile.get();
+        // std::cout << "Loading Face" << std::endl;
+        unsigned int tempIndicesOrder[3];
+        unsigned int tempTexCoordsOrder[3];
+        unsigned int tempNormalOrder[3];
+        sscanf_s(line.c_str(), "%d/%d/%d %d/%d/%d %d/%d/%d", &tempIndicesOrder[0], &tempTexCoordsOrder[0], &tempNormalOrder[0], &tempIndicesOrder[1], &tempTexCoordsOrder[1], &tempNormalOrder[1], &tempIndicesOrder[2], &tempTexCoordsOrder[2], &tempNormalOrder[2]);
 
-
-        //Might need to & in front of the objMesh thing
-        sscanf_s(tempLine.c_str(), "f %f/%f/%f %f/%f/%f %f/%f/%f", objMesh.Indices[objMesh.indexCount], objMesh.Indices[objMesh.indexCount+1], objMesh.Indices[objMesh.indexCount+2], objMesh.Indices[objMesh.indexCount+3], objMesh.Indices[objMesh.indexCount+4], objMesh.Indices[objMesh.indexCount+5], objMesh.Indices[objMesh.indexCount+6], objMesh.Indices[objMesh.indexCount+7], objMesh.Indices[objMesh.indexCount+8] );
-        objMesh.indexCount += 9;
-        
-        
-        //objInFile >> objMesh.Indices[objMesh.indexCount-1];
+        //Vertex, Texture, Normal
+        for (int i = 0; i < 3; i++)
+        {
+            IndicesVector.push_back(tempIndicesOrder[i]);
+            texCoordIndicesVector.push_back(tempTexCoordsOrder[i]);
+            normalIndicesVector.push_back(tempNormalOrder[i]);
+        }
+        indexCount += 3;
+        //std::cout << "Loaded Face" << std::endl;
     }
-
     
-};
+    void ApplyDataToMesh(Mesh& objMesh)
+    {
+        int numVertices = IndicesVector.size();
+        objMesh.vertexCount = numVertices;
+        objMesh.normalCount = numVertices;
+        objMesh.TexCoordCount = numVertices;
+        objMesh.indexCount = numVertices;
+
+        objMesh.Vertices = new Vertex[numVertices];
+        objMesh.Normals = new Vector3[numVertices];
+        objMesh.TexCoords = new TexCoord[numVertices];
+        objMesh.Indices = new GLushort[numVertices];
+
+        for (int i = 0; i < numVertices; ++i)
+        {
+            // Vertex position
+            int vIdx = IndicesVector[i] - 1;
+            objMesh.Vertices[i] = VerticesVector[vIdx];
+
+            // Texture coordinate
+            int vtIdx = texCoordIndicesVector[i] - 1;
+            objMesh.TexCoords[i] = TexCoordsVector[vtIdx];
+
+            // Normal
+            int vnIdx = normalIndicesVector[i] - 1;
+            objMesh.Normals[i] = NormalsVector[vnIdx];
+            
+            objMesh.Indices[i] = i; //Set the index to be the current iteration, aka the first position is 0, 2nd is 1 etc etc.
+        }
+    }
+}

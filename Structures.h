@@ -8,12 +8,27 @@
 
 #define REFRESHRATE 16 //This is in ms not FPS
 #define NUMOBJECTS 200 //Number of Cubes to Spawn
-#define SCREEN_WIDTH 1080 //Width of Window
-#define SCREEN_HEIGHT 1080 // Height of Window
+#define SCREEN_WIDTH 800 //Width of Window
+#define SCREEN_HEIGHT 800 // Height of Window
+#define PI 3.14159265
+#define RADIANS (PI/180.0)
 
 struct Vector3
 {
     float x,y,z;
+
+    Vector3()
+    {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+    }
+    Vector3(float Newx, float Newy, float Newz)
+    {
+        x = Newx;
+        y = Newy;
+        z = Newz;
+    }
 };
 
 struct Vector4
@@ -21,7 +36,7 @@ struct Vector4
     float x,y,z,w;
 };
 
-struct Camera
+struct CameraStruct
 {
     Vector3 eye,center,up;
 };
@@ -47,15 +62,11 @@ struct Mesh
     TexCoord* TexCoords;
     GLushort* Indices;
     int vertexCount, normalCount, TexCoordCount, indexCount;
-};
 
-struct OBJMesh
-{
-    std::vector<Vertex> Vertices;
-    std::vector<Vector3> Normals;
-    std::vector<TexCoord> TexCoords;
-    std::vector<GLushort> Indices;
-    int vertexCount, normalCount, TexCoordCount, indexCount;
+    Mesh()
+    {
+        vertexCount = normalCount = TexCoordCount = indexCount = 0;
+    }
 };
 
 struct Lighting
