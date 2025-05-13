@@ -203,6 +203,7 @@ Vector3 Camera::CalculateMagnitudeComponents(Vector3 input, float &angle)
     Vector3 output;
     output.x = input.x * cos(radianAngle) - input.z * sin(radianAngle);
     output.z = input.x * sin(radianAngle) + input.z * cos(radianAngle);
+    output.y = input.y;
 
     
 
